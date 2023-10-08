@@ -84,10 +84,8 @@ def draw_cube(led_values, segments):
 
     # Draw edges with a contrasting color for the outline
     glBegin(GL_LINES)
-    i = 0
     for segment in segments:
-        glColor3f(int(led_values[i])/255, int(led_values[i+1])/255, int(led_values[i+2])/255)
-        i += 3
+        glColor3f(0.2, 0.2, 0.2)
         glVertex3fv(segment[0])
         glVertex3fv(segment[1])
     glEnd()
@@ -97,8 +95,11 @@ def draw_cube(led_values, segments):
 
     # Draw edge interior with the desired color
     glBegin(GL_LINES)
+    
+    i = 0
     for segment in segments:
-        glColor3fv(segment[2])
+        glColor3f(int(led_values[i])/255, int(led_values[i+1])/255, int(led_values[i+2])/255)
+        i += 3
         glVertex3fv(segment[0])
         glVertex3fv(segment[1])
     glEnd()
@@ -167,7 +168,7 @@ def main():
             led_values = data.decode("utf-8").split(",")[:-1]
         else:
             # Fallback
-            led_values = ['255' for _ in range(108*3)] # num_leds * leds_per_channel
+            led_values = [str(random.choice(range(255))) for _ in range(108*3)] # num_leds * leds_per_channel
 
         # Clear screen and redraw
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
