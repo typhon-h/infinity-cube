@@ -1,9 +1,10 @@
-
 #include "led.h"
+#include "tasks.h"
 
 // Task Scheduler
 #include <TaskScheduler.h>
 #include <TaskSchedulerDeclarations.h>
+
 Scheduler schedule;
 
 void setup()
@@ -19,6 +20,12 @@ void setup()
 
     // Set up the scheduler
     schedule.init();
+
+    // Register tasks
+    schedule.addTask(pattern_t);
+
+    // Enable tasks
+    pattern_t.enable();
 }
 
 void loop()

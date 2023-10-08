@@ -46,5 +46,8 @@ Vertex_t vertices[CUBE_VERTICES];
 CRGB leds[NUM_LEDS];
 
 void led_setup(void);
+void vertex_chase(void);
+
+void (*led_patterns[])(void) = {vertex_chase}; // Add more patterns here
 
 #endif // _LED_H_

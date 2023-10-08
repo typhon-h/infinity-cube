@@ -64,3 +64,9 @@ void init_vertices()
     vertices[6].edges[VERTEX_Y_EDGE] = (Edge_t){5, true};
     vertices[6].edges[VERTEX_Z_EDGE] = (Edge_t){11, false};
 }
+
+// Example pattern just to see if things are working
+void vertex_chase()
+{
+    Serial.println("Test");
+}
