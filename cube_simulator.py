@@ -1,3 +1,11 @@
+"""
+Quick PyGame + OpenGL emulator to read LED values from a Serial port and display
+them on a rotatable cube.
+
+This is primarily ChatGPT generated - with the exception of the serial integrations
+Honestly pretty impressed at how well it was able to build it :D
+"""
+
 import pygame
 import serial
 import sys
@@ -64,7 +72,7 @@ Updates the cube with LED values from the serial port
 data in the form of a list
 R0,G0,B0,R1,G1,B1...
 '''
-def draw_cube(led_values):
+def draw_cube(led_values, segments):
     glEnable(GL_LINE_SMOOTH)
     
     glLineWidth(11.0)  # Slightly thicker lines for the outline
@@ -154,7 +162,7 @@ def main():
 
         # Clear screen and redraw
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        draw_cube(led_values)
+        draw_cube(led_values, segments)
         draw_vertex_numbers()  # Add this line to draw vertex numbers
 
         pygame.display.flip()
