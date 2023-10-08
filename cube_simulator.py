@@ -15,21 +15,23 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 import random
 
-PORT = sys.argv[1]
+SERIAL_MODE = False # Toggle this to disable serial
 LEDS_PER_EDGE = 9
 
-arduino = serial.Serial(port=PORT,
+if SERIAL_MODE:
+    PORT = sys.argv[1]
+    arduino = serial.Serial(port=PORT,
                         baudrate=115200, timeout=.1)
 
-vertices = (
+vertices = ( # Starting bottom right going anti-clockwise
     (1, -1, -1),
-    (1, -1, 1),
-    (1, 1, 1),
-    (1, 1, -1),
     (-1, -1, -1),
     (-1, -1, 1),
+    (1, -1, 1),
+    (1, 1, -1),
+    (-1, 1, -1),
     (-1, 1, 1),
-    (-1, 1, -1)
+    (1, 1, 1),
 )
 
 edges = ( # Order of edges as defined in wiring diagram
@@ -154,11 +156,15 @@ def main():
                     glRotatef(y, 1, 0, 0)
 
         # Read serial data
-        data = arduino.readline()
-        if len(data) == 0:
-            print("Serial Empty")
-            continue
-        led_values = data.decode("utf-8").split(",")[:-1]
+        if SERIAL_MODE:
+            data = arduino.readline()
+            if len(data) == 0:
+                print("Serial Empty")
+                continue
+            led_values = data.decode("utf-8").split(",")[:-1]
+        else:
+            # Fallback
+            led_values = ['255' for _ in range(108*3)] # num_leds * leds_per_channel
 
         # Clear screen and redraw
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
