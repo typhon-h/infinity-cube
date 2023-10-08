@@ -11,6 +11,9 @@ void setup()
     {
     }
 
+    // Initialize the LEDs
+    led_setup();
+
     // Set up the scheduler
     schedule.init();
 }
