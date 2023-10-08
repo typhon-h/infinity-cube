@@ -1,0 +1,164 @@
+import pygame
+import serial
+import sys
+from pygame.locals import *
+from OpenGL.GL import *
+from OpenGL.GLUT import *
+from OpenGL.GLU import *
+import random
+
+PORT = sys.argv[1]
+LEDS_PER_EDGE = 9
+
+arduino = serial.Serial(port=PORT,
+                        baudrate=115200, timeout=.1)
+
+vertices = (
+    (1, -1, -1),
+    (1, -1, 1),
+    (1, 1, 1),
+    (1, 1, -1),
+    (-1, -1, -1),
+    (-1, -1, 1),
+    (-1, 1, 1),
+    (-1, 1, -1)
+)
+
+edges = ( # Order of edges as defined in wiring diagram
+    (0, 4),
+    (4, 7),
+    (4, 5),
+    (5, 6),
+    (5, 1),
+    (1, 2),
+    (1, 0),
+    (0, 3),
+    (3, 7),
+    (7, 6),
+    (6, 2),
+    (2, 3)
+)
+
+'''
+Splits edges between vertex A and B into number of individually addressable LEDs
+'''
+def generate_edges(start_vertex, end_vertex):
+    segments = []
+    num_segments = LEDS_PER_EDGE
+    for i in range(num_segments):
+        t1 = i / num_segments
+        t2 = (i + 1) / num_segments
+        x1 = start_vertex[0] + t1 * (end_vertex[0] - start_vertex[0])
+        y1 = start_vertex[1] + t1 * (end_vertex[1] - start_vertex[1])
+        z1 = start_vertex[2] + t1 * (end_vertex[2] - start_vertex[2])
+        x2 = start_vertex[0] + t2 * (end_vertex[0] - start_vertex[0])
+        y2 = start_vertex[1] + t2 * (end_vertex[1] - start_vertex[1])
+        z2 = start_vertex[2] + t2 * (end_vertex[2] - start_vertex[2])
+        color = (0.1, 0.1, 0.1) #Initialise as arbitrary grey
+        segments.append(((x1, y1, z1), (x2, y2, z2), color))
+    return segments
+
+
+'''
+Updates the cube with LED values from the serial port
+data in the form of a list
+R0,G0,B0,R1,G1,B1...
+'''
+def draw_cube(led_values):
+    glEnable(GL_LINE_SMOOTH)
+    
+    glLineWidth(11.0)  # Slightly thicker lines for the outline
+
+    # Draw edges with a contrasting color for the outline
+    glBegin(GL_LINES)
+    i = 0
+    for segment in segments:
+        glColor3f(int(led_values[i])/255, int(led_values[i+1])/255, int(led_values[i+2])/255)
+        i += 3
+        glVertex3fv(segment[0])
+        glVertex3fv(segment[1])
+    glEnd()
+    
+    
+    glLineWidth(10.0)
+
+    # Draw edge interior with the desired color
+    glBegin(GL_LINES)
+    for segment in segments:
+        glColor3fv(segment[2])
+        glVertex3fv(segment[0])
+        glVertex3fv(segment[1])
+    glEnd()
+
+
+    glDisable(GL_LINE_SMOOTH)
+
+
+'''
+Displays the number of each visual vertex to keep track of rotation easier
+'''
+def draw_vertex_numbers():
+    font = GLUT_BITMAP_TIMES_ROMAN_24
+    glColor3f(1.0, 1.0, 1.0)  # Set font color to white
+    offset = 0.1  # Offset from the vertices
+    for i, vertex in enumerate(vertices):
+        x, y, z = vertex
+        glRasterPos3f(x + offset, y + offset, z + offset)  # Adjust position
+        for char in str(i):
+            glutBitmapCharacter(font, ord(char))
+
+
+def main():
+    pygame.init()
+    display = (800, 600)
+    pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
+    gluPerspective(45, (display[0] / display[1]), 0.1, 50.0)
+    glTranslatef(0.0, 0.0, -5)
+
+    clock = pygame.time.Clock()
+    
+    segments = [] # Edges split into led strips
+    
+    # Generate segments and colors
+    for edge in edges:
+        start_vertex = vertices[edge[0]]
+        end_vertex = vertices[edge[1]]
+        leds = generate_edges(start_vertex, end_vertex)
+        segments.extend(leds)
+
+    while True:
+        # Poll events to rotate the cube
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 4:
+                    glTranslatef(0.0, 0.0, 1.0)
+                if event.button == 5:
+                    glTranslatef(0.0, 0.0, -1.0)
+
+            if event.type == pygame.MOUSEMOTION:
+                if event.buttons[0] == 1:
+                    x, y = event.rel
+                    glRotatef(x, 0, 1, 0)
+                    glRotatef(y, 1, 0, 0)
+
+        # Read serial data
+        data = arduino.readline()
+        if len(data) == 0:
+            print("Serial Empty")
+            continue
+        led_values = data.decode("utf-8").split(",")[:-1]
+
+        # Clear screen and redraw
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        draw_cube(led_values)
+        draw_vertex_numbers()  # Add this line to draw vertex numbers
+
+        pygame.display.flip()
+        clock.tick(60)
+
+if __name__ == "__main__":
+    main()
