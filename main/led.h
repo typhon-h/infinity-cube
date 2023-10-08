@@ -8,6 +8,8 @@
 #define LED_PIN 3
 #define MAX_CURRENT_MA 2000
 #define LED_OPERATING_V 5
+#define DEFAULT_INTENSITY 255
+#define DEFAULT_SATURATION 255
 
 #define NUM_LEDS 108
 
@@ -34,54 +36,15 @@ typedef struct
 
 typedef struct
 {
-    Edge_t[EDGES_PER_VERTEX] edges;
+    Edge_t edges[EDGES_PER_VERTEX];
 } Vertex_t;
-
-CRGB leds[NUM_LEDS];
 
 // Define vertices - this is bad practice since it assumes CUBE_VERTICES = 8
 // but is a safe assumption unless cubes stop being cubes ¯\_(ツ)_/¯
 Vertex_t vertices[CUBE_VERTICES];
 
-// T/B: Top/Bottom | L/R: Left/Right | F/B: Front/Back
-// BRB
-vertices[0].edges[VERTEX_X_EDGE] = {0, false};
-vertices[0].edges[VERTEX_Y_EDGE] = {7, false};
-vertices[0].edges[VERTEX_Z_EDGE] = {6, true};
+CRGB leds[NUM_LEDS];
 
-// BLB
-vertices[1].edges[VERTEX_X_EDGE] = {0, true};
-vertices[1].edges[VERTEX_Y_EDGE] = {1, false};
-vertices[1].edges[VERTEX_Z_EDGE] = {2, false};
-
-// BLF
-vertices[2].edges[VERTEX_X_EDGE] = {4, false};
-vertices[2].edges[VERTEX_Y_EDGE] = {3, false};
-vertices[2].edges[VERTEX_Z_EDGE] = {2, true};
-
-// BRF
-vertices[3].edges[VERTEX_X_EDGE] = {4, true};
-vertices[3].edges[VERTEX_Y_EDGE] = {5, false};
-vertices[3].edges[VERTEX_Z_EDGE] = {6, false};
-
-// TRB
-vertices[4].edges[VERTEX_X_EDGE] = {8, false};
-vertices[4].edges[VERTEX_Y_EDGE] = {7, true};
-vertices[4].edges[VERTEX_Z_EDGE] = {11, true};
-
-// TLB
-vertices[5].edges[VERTEX_X_EDGE] = {8, true};
-vertices[5].edges[VERTEX_Y_EDGE] = {1, true};
-vertices[5].edges[VERTEX_Z_EDGE] = {9, false};
-
-// TLF
-vertices[6].edges[VERTEX_X_EDGE] = {10, false};
-vertices[6].edges[VERTEX_Y_EDGE] = {3, true};
-vertices[6].edges[VERTEX_Z_EDGE] = {9, true};
-
-// TRF
-vertices[7].edges[VERTEX_X_EDGE] = {10, true};
-vertices[7].edges[VERTEX_Y_EDGE] = {5, true};
-vertices[7].edges[VERTEX_Z_EDGE] = {11, false};
+void led_setup(void);
 
 #endif // _LED_H_
