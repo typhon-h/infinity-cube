@@ -16,36 +16,39 @@ from OpenGL.GLU import *
 import random
 
 SERIAL_MODE = False # Toggle this to disable serial
-LEDS_PER_EDGE = 9
+TOTAL_LEDS = 108
+CUBE_EDGES = 12
 
 if SERIAL_MODE:
     PORT = sys.argv[1]
     arduino = serial.Serial(port=PORT,
                         baudrate=115200, timeout=.1)
 
-vertices = ( # Starting bottom right going anti-clockwise
+# Starting bottom right going anti-clockwise.
+# Arranged in even/odd pattern
+vertices = ( 
     (1, -1, -1),
     (-1, -1, -1),
     (-1, -1, 1),
     (1, -1, 1),
-    (1, 1, -1),
     (-1, 1, -1),
     (-1, 1, 1),
     (1, 1, 1),
+    (1, 1, -1),
 )
 
 edges = ( # Order of edges as defined in wiring diagram
-    (0, 4),
+    (0, 7),
     (4, 7),
     (4, 5),
     (5, 6),
-    (5, 1),
+    (4, 1),
     (1, 2),
     (1, 0),
     (0, 3),
-    (3, 7),
+    (3, 6),
     (7, 6),
-    (6, 2),
+    (5, 2),
     (2, 3)
 )
 
@@ -54,7 +57,7 @@ Splits edges between vertex A and B into number of individually addressable LEDs
 '''
 def generate_edges(start_vertex, end_vertex):
     segments = []
-    num_segments = LEDS_PER_EDGE
+    num_segments = int(TOTAL_LEDS / CUBE_EDGES)
     for i in range(num_segments):
         t1 = i / num_segments
         t2 = (i + 1) / num_segments
