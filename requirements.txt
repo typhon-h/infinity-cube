@@ -1,0 +1,4 @@
+pygame
+pyserial
+PyOpenGl
+PyOpenGL_accelerate
