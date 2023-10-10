@@ -25,6 +25,8 @@ CRGB leds[NUM_LEDS];
 
 void setup()
 {
+    Serial.begin(115200);
+    
     delay(3000); // 3 second delay for recovery
 
     // tell FastLED about the LED strip configuration
