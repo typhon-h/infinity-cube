@@ -6,27 +6,27 @@ This is primarily ChatGPT generated - with the exception of the serial integrati
 Honestly pretty impressed at how well it was able to build it :D
 """
 
+import sys
+import random
 import pygame
 import serial
-import sys
 from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
-import random
 
-SERIAL_MODE = False # Toggle this to disable serial
+
+SERIAL_MODE = False  # Toggle this to disable serial
 TOTAL_LEDS = 108
 CUBE_EDGES = 12
 
 if SERIAL_MODE:
     PORT = sys.argv[1]
-    arduino = serial.Serial(port=PORT,
-                        baudrate=115200, timeout=.1)
+    arduino = serial.Serial(port=PORT, baudrate=115200, timeout=0.1)
 
 # Starting bottom right going anti-clockwise.
 # Arranged in even/odd pattern
-vertices = ( 
+vertices = (
     (1, -1, -1),
     (-1, -1, -1),
     (-1, -1, 1),
@@ -37,7 +37,7 @@ vertices = (
     (1, 1, -1),
 )
 
-edges = ( # Order of edges as defined in wiring diagram
+edges = (  # Order of edges as defined in wiring diagram
     (0, 7),
     (4, 7),
     (4, 5),
@@ -49,13 +49,14 @@ edges = ( # Order of edges as defined in wiring diagram
     (3, 6),
     (7, 6),
     (5, 2),
-    (2, 3)
+    (2, 3),
 )
 
-'''
-Splits edges between vertex A and B into number of individually addressable LEDs
-'''
+
 def generate_edges(start_vertex, end_vertex):
+    """
+    Splits edges between vertex A and B into number of individually addressable LEDs
+    """
     segments = []
     num_segments = int(TOTAL_LEDS / CUBE_EDGES)
     for i in range(num_segments):
@@ -67,19 +68,19 @@ def generate_edges(start_vertex, end_vertex):
         x2 = start_vertex[0] + t2 * (end_vertex[0] - start_vertex[0])
         y2 = start_vertex[1] + t2 * (end_vertex[1] - start_vertex[1])
         z2 = start_vertex[2] + t2 * (end_vertex[2] - start_vertex[2])
-        color = (0.1, 0.1, 0.1) #Initialise as arbitrary grey
+        color = (0.1, 0.1, 0.1)  # Initialise as arbitrary grey
         segments.append(((x1, y1, z1), (x2, y2, z2), color))
     return segments
 
 
-'''
-Updates the cube with LED values from the serial port
-data in the form of a list
-R0,G0,B0,R1,G1,B1...
-'''
 def draw_cube(led_values, segments):
+    """
+    Updates the cube with LED values from the serial port
+    data in the form of a list
+    R0,G0,B0,R1,G1,B1...
+    """
     glEnable(GL_LINE_SMOOTH)
-    
+
     glLineWidth(11.0)  # Slightly thicker lines for the outline
 
     # Draw edges with a contrasting color for the outline
@@ -89,29 +90,31 @@ def draw_cube(led_values, segments):
         glVertex3fv(segment[0])
         glVertex3fv(segment[1])
     glEnd()
-    
-    
+
     glLineWidth(10.0)
 
     # Draw edge interior with the desired color
     glBegin(GL_LINES)
-    
+
     i = 0
     for segment in segments:
-        glColor3f(int(led_values[i])/255, int(led_values[i+1])/255, int(led_values[i+2])/255)
+        glColor3f(
+            int(led_values[i]) / 255,
+            int(led_values[i + 1]) / 255,
+            int(led_values[i + 2]) / 255,
+        )
         i += 3
         glVertex3fv(segment[0])
         glVertex3fv(segment[1])
     glEnd()
 
-
     glDisable(GL_LINE_SMOOTH)
 
 
-'''
-Displays the number of each visual vertex to keep track of rotation easier
-'''
 def draw_vertex_numbers():
+    """
+    Displays the number of each visual vertex to keep track of rotation easier
+    """
     font = GLUT_BITMAP_TIMES_ROMAN_24
     glColor3f(1.0, 1.0, 1.0)  # Set font color to white
     offset = 0.1  # Offset from the vertices
@@ -130,9 +133,9 @@ def main():
     glTranslatef(0.0, 0.0, -5)
 
     clock = pygame.time.Clock()
-    
-    segments = [] # Edges split into led strips
-    
+
+    segments = []  # Edges split into led strips
+
     # Generate segments and colors
     for edge in edges:
         start_vertex = vertices[edge[0]]
@@ -168,7 +171,9 @@ def main():
             led_values = data.decode("utf-8").split(",")[:-1]
         else:
             # Fallback
-            led_values = [str(random.choice(range(255))) for _ in range(108*3)] # num_leds * leds_per_channel
+            led_values = [
+                str(random.choice(range(255))) for _ in range(108 * 3)
+            ]  # num_leds * leds_per_channel
 
         # Clear screen and redraw
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -177,6 +182,7 @@ def main():
 
         pygame.display.flip()
         clock.tick(60)
+
 
 if __name__ == "__main__":
     main()
