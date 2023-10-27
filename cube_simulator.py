@@ -16,13 +16,13 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
 
-SERIAL_MODE = False  # Toggle this to disable serial
+SERIAL_MODE = True  # Toggle this to disable serial
 TOTAL_LEDS = 108
 CUBE_EDGES = 12
 
 if SERIAL_MODE:
     PORT = sys.argv[1]
-    arduino = serial.Serial(port=PORT, baudrate=115200, timeout=0.1)
+    arduino = serial.Serial(port=PORT, baudrate=115200, timeout=0.1, dsrdtr=False, rtscts=False)
 
 # Starting bottom right going anti-clockwise.
 # Arranged in even/odd pattern
@@ -168,7 +168,11 @@ def main():
             if len(data) == 0:
                 print("Serial Empty")
                 continue
-            led_values = data.decode("utf-8").split(",")[:-1]
+            try:
+                led_values = data.decode("utf-8").split(",")[:-1]
+            except UnicodeDecodeError:
+                print("Invalid Data")
+                continue
         else:
             # Fallback
             led_values = [
@@ -177,7 +181,10 @@ def main():
 
         # Clear screen and redraw
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        draw_cube(led_values, segments)
+        try:
+            draw_cube(led_values, segments)
+        except IndexError:
+            print("Missing Data")
         draw_vertex_numbers()  # Add this line to draw vertex numbers
 
         pygame.display.flip()
