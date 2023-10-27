@@ -183,7 +183,7 @@ def main():
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         try:
             draw_cube(led_values, segments)
-        except IndexError:
+        except (IndexError, GLError, ValueError):
             print("Missing Data")
         draw_vertex_numbers()  # Add this line to draw vertex numbers
 
