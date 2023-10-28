@@ -17,7 +17,7 @@ from OpenGL.GLU import *
 
 
 SERIAL_MODE = True  # Toggle this to disable serial
-TOTAL_LEDS = 108
+TOTAL_LEDS = 120
 CUBE_EDGES = 12
 MAX_LEVEL = 255
 
