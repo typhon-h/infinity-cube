@@ -31,7 +31,10 @@ void led_setup()
       for(int segment = vertex * 3; segment < ((vertex * 3) + 3); segment++) {
         FFXSegment* seg = segments[segment];
         seg->setFX(new ChaseFX(seg->getLength())); // Change the FX class here for cool things :)
+        seg->getFX()->getFXColor().setPalette(NamedPalettes::getInstance()["multi"]); // Change the Palette here for more cool things :)
+        
         seg->setOpacity(255);
+        
         // TODO: Janky POC for directionality - definitely needs to be a struct value
         if ((vertex % 2 == 0 && seg->getTag()[2] == '1') 
               || (vertex % 2 != 0 && seg->getTag()[2] == '0')) 
