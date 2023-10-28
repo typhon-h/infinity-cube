@@ -1,5 +1,5 @@
-#include "led.h"
-#include "tasks.h"
+#include "header/led.h"
+#include "header/tasks.h"
 
 // Task Scheduler
 #include <TaskScheduler.h>
@@ -9,11 +9,11 @@ Scheduler schedule;
 
 void setup()
 {
+    // Safety to allow re-programming
+    delay(3000);
+
     // Initialise Serial for the simulator
     Serial.begin(115200);
-    while (!Serial)
-    {
-    }
 
     // Initialize the LEDs
     led_setup();
@@ -22,10 +22,10 @@ void setup()
     schedule.init();
 
     // Register tasks
-    schedule.addTask(pattern_t);
+    schedule.addTask(ledUpdateTask);
 
     // Enable tasks
-    pattern_t.enable();
+    ledUpdateTask.enable();
 }
 
 void loop()
