@@ -15,9 +15,10 @@
 #define DEFAULT_INTENSITY 255
 #define DEFAULT_SATURATION 255
 
-#define NUM_LEDS 120 // TODO: Now using full strip so set 120 and 10/edge
+#define NUM_LEDS 120
 
 #define CUBE_EDGES 12
+#define CUBE_VERTICES 8
 #define LED_PER_EDGE (NUM_LEDS / CUBE_EDGES)
 #define INDEX_FROM_EDGE(X) (X * LED_PER_EDGE)
 
@@ -27,6 +28,7 @@
 #define SEGMENT_OUT_VERTEX_END_INDEX(EDGE_NUM) (INDEX_FROM_EDGE(EDGE_NUM) + ((LED_PER_EDGE - 1) / 2))
 #define SEGMENT_IN_VERTEX_START_INDEX(EDGE_NUM) (INDEX_FROM_EDGE(EDGE_NUM) + ((LED_PER_EDGE) / 2))
 #define SEGMENT_IN_VERTEX_END_INDEX(EDGE_NUM) (INDEX_FROM_EDGE(EDGE_NUM) + LED_PER_EDGE - 1)
+#define SEGMENT_PER_VERTEX 3
 
 CRGB leds[NUM_LEDS];                     // Global LED state array
 FFXController fxctrlr = FFXController(); // Global controller for effects

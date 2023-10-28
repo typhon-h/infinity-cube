@@ -27,14 +27,15 @@ void led_setup()
     segment_init();
 
     // TODO: Temporary chase effect to test segments and direction symmetry
-    for(int vertex = 0; vertex < 8; vertex++) { 
-      for(int segment = vertex * 3; segment < ((vertex * 3) + 3); segment++) {
+    for(int vertex = 0; vertex < CUBE_VERTICES; vertex++) { 
+      for(int segment = vertex * SEGMENT_PER_VERTEX; segment < ((vertex * SEGMENT_PER_VERTEX) + SEGMENT_PER_VERTEX); segment++) {
         FFXSegment* seg = segments[segment].segment;
         seg->setFX(new ChaseFX(seg->getLength())); // Change the FX class here for cool things :)
         seg->getFX()->getFXColor().setPalette(NamedPalettes::getInstance()["multi"]); // Change the Palette here for more cool things :)
         
-        seg->setOpacity(255);
+        seg->setOpacity(DEFAULT_INTENSITY);
         
+        // Alternate direction of even/odd vertices
         // Reverse the fx direction of strips with flipped directions from vertex
         if ((vertex % 2 == 0 && segments[segment].direction == IN) 
               || (vertex % 2 != 0 && segments[segment].direction == OUT)) 
