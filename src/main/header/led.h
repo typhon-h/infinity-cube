@@ -39,8 +39,22 @@ typedef enum
   Z = 'Z'
 } EDGE_PLANE;
 
+// Enum to describe if the data of a segment is going into/out of a vertex
+typedef enum
+{
+  OUT,
+  IN
+} STRIP_DIRECTION;
+
+typedef struct 
+{
+  FFXSegment *segment;
+  EDGE_PLANE plane;
+  STRIP_DIRECTION direction;
+} Section_t;
+
 // Define segments to be re-arranged into different symmetry patterns
-FFXSegment *segments[CUBE_EDGES * 2];
+Section_t segments[CUBE_EDGES * 2];
 
 void led_setup(void);
 
