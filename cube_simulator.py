@@ -19,6 +19,7 @@ from OpenGL.GLU import *
 SERIAL_MODE = True  # Toggle this to disable serial
 TOTAL_LEDS = 108
 CUBE_EDGES = 12
+MAX_LEVEL = 255
 
 if SERIAL_MODE:
     PORT = sys.argv[1]
@@ -99,9 +100,9 @@ def draw_cube(led_values, segments):
     i = 0
     for segment in segments:
         glColor3f(
-            int(led_values[i]) / 255,
-            int(led_values[i + 1]) / 255,
-            int(led_values[i + 2]) / 255,
+            int(led_values[i]) / MAX_LEVEL,
+            int(led_values[i + 1]) / MAX_LEVEL,
+            int(led_values[i + 2]) / MAX_LEVEL,
         )
         i += 3
         glVertex3fv(segment[0])
@@ -176,7 +177,7 @@ def main():
         else:
             # Fallback
             led_values = [
-                str(random.choice(range(255))) for _ in range(108 * 3)
+                str(random.choice(range(MAX_LEVEL))) for _ in range(108 * 3)
             ]  # num_leds * leds_per_channel
 
         # Clear screen and redraw
