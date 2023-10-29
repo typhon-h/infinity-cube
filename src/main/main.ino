@@ -1,12 +1,6 @@
 #include "header/led.h"
 #include "header/tasks.h"
 
-// Task Scheduler
-#include <TaskScheduler.h>
-#include <TaskSchedulerDeclarations.h>
-
-Scheduler schedule;
-
 void setup()
 {
     // Safety to allow re-programming
@@ -18,17 +12,11 @@ void setup()
     // Initialize the LEDs
     led_setup();
 
-    // Set up the scheduler
-    schedule.init();
-
-    // Register tasks
-    schedule.addTask(ledUpdateTask);
-
-    // Enable tasks
-    ledUpdateTask.enable();
+    // Set up the schedulers
+    scheduler_setup();
 }
 
 void loop()
 {
-    schedule.execute(); // Enable task scheduler
+  // Unused - Handled by FreeRTOS on independent cores
 }
