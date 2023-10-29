@@ -16,7 +16,7 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
 
-SERIAL_MODE = True  # Toggle this to disable serial
+SERIAL_MODE = False  # Toggle this to disable serial
 TOTAL_LEDS = 120
 CUBE_EDGES = 12
 MAX_LEVEL = 255
@@ -132,6 +132,7 @@ def main():
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
     gluPerspective(45, (display[0] / display[1]), 0.1, 50.0)
     glTranslatef(0.0, 0.0, -5)
+    glutInit()
 
     clock = pygame.time.Clock()
 
