@@ -48,7 +48,7 @@ typedef enum
   IN
 } STRIP_DIRECTION;
 
-typedef struct 
+typedef struct
 {
   FFXSegment *segment;
   EDGE_PLANE plane;
