@@ -177,7 +177,7 @@ def main():
         else:
             # Fallback
             led_values = [
-                str(random.choice(range(MAX_LEVEL))) for _ in range(108 * 3)
+                str(random.choice(range(MAX_LEVEL))) for _ in range(TOTAL_LEDS * 3)
             ]  # num_leds * leds_per_channel
 
         # Clear screen and redraw
