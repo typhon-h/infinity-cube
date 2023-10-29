@@ -23,9 +23,10 @@ try: # Idenfity port and configure serial
     PORT = sys.argv[1]
     arduino = serial.Serial(port=PORT, baudrate=115200, timeout=0.1, dsrdtr=False, rtscts=False)
     SERIAL_MODE = True
-except Exception: # Disable serial mode if port cannot be found
+except Exception as e: # Disable serial mode if port cannot be found
+    print(e)
     SERIAL_MODE = False
-    
+
 # Starting bottom right going anti-clockwise.
 # Arranged in even/odd pattern
 vertices = (
