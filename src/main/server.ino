@@ -2,7 +2,7 @@
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 #include "header/server.h"
-#include "header/env.h" // Temporary ENV for wifi credentials
+#include "header/preferences.h"
 
 void server_setup()
 {
@@ -19,15 +19,19 @@ void server_setup()
 boolean connectWifi()
 {
   boolean state = true;
-  int i = 0;
 
   WiFi.mode(WIFI_STA);
-  WiFi.begin(SSID, PASSWORD);
+
+  preferences.begin(DEVICE_NAME, READ_ONLY);
+  WiFi.begin(preferences.getString(SSID_PREF, ""), preferences.getString(PASSWORD_PREF, ""));
+  preferences.end();
+
   Serial.println("");
   Serial.println("Connecting to WiFi");
 
   // Wait for connection
   Serial.print("Connecting...");
+  int i = 0;
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(500);
@@ -39,11 +43,12 @@ boolean connectWifi()
     }
     i++;
   }
+
   Serial.println("");
   if (state)
   {
     Serial.print("Connected to ");
-    Serial.println(SSID);
+    Serial.println(WiFi.SSID());
     Serial.print("IP address: ");
     Serial.println(WiFi.localIP());
   }
@@ -54,7 +59,7 @@ boolean connectWifi()
     WiFi.disconnect();
 
     WiFi.mode(WIFI_AP); // Set WiFi mode to Access Point
-    if (WiFi.softAP("Infinity Cube"))
+    if (WiFi.softAP(DEVICE_NAME))
     {
       Serial.println("Access Point Enabled");
       Serial.print("IP address: ");
@@ -76,9 +81,29 @@ void assign_routes(AsyncWebServer *server)
   server->on("/", HTTP_GET, [](AsyncWebServerRequest *request)
              { request->send(200, "text/plain", "This is an example index page your server may send."); });
 
-  server->on("/test", HTTP_GET, [](AsyncWebServerRequest *request)
-             { request->send(200, "text/plain", "This is a second subpage you may have."); });
+  server->on("/reconnect", HTTP_POST, [](AsyncWebServerRequest *request)
+             {
+              if (request->hasParam(SSID_PREF) && request->hasParam(PASSWORD_PREF)) {
+                setWifiCredentials(request->getParam(SSID_PREF)->value(), request->getParam(PASSWORD_PREF)->value());
+                request->send(200, "text/plain", "Updated. Rebooting...");
+                ESP.restart();
+              } else {
+                request->send(400, "text/plain", "Bad Request");
+              } });
 
   server->onNotFound([](AsyncWebServerRequest *request)
                      { request->send(404, "text/plain", "Not found"); });
+}
+
+void setWifiCredentials(String ssid, String password)
+{
+  preferences.begin(DEVICE_NAME, READ_WRITE);
+
+  preferences.remove(SSID_PREF);
+  preferences.remove(PASSWORD_PREF);
+
+  preferences.putString(SSID_PREF, ssid);
+  preferences.putString(PASSWORD_PREF, password);
+  
+  preferences.end();
 }

@@ -1,3 +1,4 @@
+#include "header/preferences.h"
 #include "header/led.h"
 #include "header/tasks.h"
 #include "header/server.h"
@@ -6,6 +7,11 @@ void setup()
 {
   // Safety to allow re-programming
   delay(3000);
+
+  // Uncomment to reset preferences on boot
+  // preferences.begin(DEVICE_NAME, READ_WRITE);
+  // preferences.clear();
+  // preferences.end();
 
   // Initialise Serial for the simulator
   Serial.begin(115200);
