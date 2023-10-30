@@ -85,11 +85,23 @@ void assign_routes(AsyncWebServer *server)
              {
               if (request->hasParam(SSID_PREF) && request->hasParam(PASSWORD_PREF)) {
                 setWifiCredentials(request->getParam(SSID_PREF)->value(), request->getParam(PASSWORD_PREF)->value());
-                request->send(STATUS_OK, "text/plain", "Updated. Rebooting...");
+                request->send(STATUS_OK, "text/plain", "Updated.");
+                delay(1000); // Buffer to allow response to send
                 ESP.restart();
               } else {
                 request->send(STATUS_BAD_REQUEST, "text/plain", "Bad Request");
-              } });
+              } 
+            });
+
+  server->on("/reset", HTTP_GET, [](AsyncWebServerRequest *request)
+            {
+              preferences.begin(DEVICE_NAME, READ_WRITE);
+              preferences.clear();
+              preferences.end();
+              request->send(STATUS_OK, "text/plain", "Preferences Cleared.");
+              delay(1000); // Buffer to allow response to send
+              ESP.restart();
+            });
 
   server->onNotFound([](AsyncWebServerRequest *request)
                      { request->send(STATUS_NOT_FOUND, "text/plain", "Not found"); });
