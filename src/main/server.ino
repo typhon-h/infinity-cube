@@ -79,20 +79,20 @@ boolean connectWifi()
 void assign_routes(AsyncWebServer *server)
 {
   server->on("/", HTTP_GET, [](AsyncWebServerRequest *request)
-             { request->send(200, "text/plain", "This is an example index page your server may send."); });
+             { request->send(STATUS_OK, "text/plain", "This is an example index page your server may send."); });
 
-  server->on("/reconnect", HTTP_POST, [](AsyncWebServerRequest *request)
+  server->on("/connect", HTTP_POST, [](AsyncWebServerRequest *request)
              {
               if (request->hasParam(SSID_PREF) && request->hasParam(PASSWORD_PREF)) {
                 setWifiCredentials(request->getParam(SSID_PREF)->value(), request->getParam(PASSWORD_PREF)->value());
-                request->send(200, "text/plain", "Updated. Rebooting...");
+                request->send(STATUS_OK, "text/plain", "Updated. Rebooting...");
                 ESP.restart();
               } else {
-                request->send(400, "text/plain", "Bad Request");
+                request->send(STATUS_BAD_REQUEST, "text/plain", "Bad Request");
               } });
 
   server->onNotFound([](AsyncWebServerRequest *request)
-                     { request->send(404, "text/plain", "Not found"); });
+                     { request->send(STATUS_NOT_FOUND, "text/plain", "Not found"); });
 }
 
 void setWifiCredentials(String ssid, String password)
@@ -104,6 +104,6 @@ void setWifiCredentials(String ssid, String password)
 
   preferences.putString(SSID_PREF, ssid);
   preferences.putString(PASSWORD_PREF, password);
-  
+
   preferences.end();
 }
