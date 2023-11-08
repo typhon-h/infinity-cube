@@ -30,8 +30,8 @@
 #define SEGMENT_IN_VERTEX_END_INDEX(EDGE_NUM) (INDEX_FROM_EDGE(EDGE_NUM) + LED_PER_EDGE - 1)
 #define SEGMENT_PER_VERTEX 3
 
-CRGB leds[NUM_LEDS];                     // Global LED state array
-FFXController fxctrlr = FFXController(); // Global controller for effects
+extern CRGB leds[NUM_LEDS];   // Global LED state array
+extern FFXController fxctrlr; // Global controller for effects
 
 // TODO: Not sure if these will be used yet but allows a consistent way to 'group' edges on the same plane
 typedef enum
@@ -56,7 +56,7 @@ typedef struct
 } Section_t;
 
 // Define segments to be re-arranged into different symmetry patterns
-Section_t segments[CUBE_EDGES * 2];
+extern Section_t segments[CUBE_EDGES * 2];
 
 void led_setup(void);
 

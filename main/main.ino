@@ -1,7 +1,9 @@
-#include "header/preferences.h"
-#include "header/led.h"
-#include "header/tasks.h"
-#include "header/server.h"
+#include "preferences.h"
+#include "src/led/led.h"
+#include "src/tasks/tasks.h"
+#include "src/server/server.h"
+
+Preferences preferences;
 
 void setup()
 {

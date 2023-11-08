@@ -1,6 +1,15 @@
-#include "header/tasks.h"
-#include "header/led.h"
+#include "tasks.h"
+#include "../led/led.h"
 
+// Set of task definition for the RTOS scheduler to execute
+TASK_T system_tasks[] = {
+    {"LED Update", &ledUpdateCallback, LED_UPDATE_TASK_FREQUENCY, BASE_PRIORITY, CORE1},
+};
+
+/**
+ * @brief Registers each task to the dedicated core and enables execution
+ *
+ */
 void scheduler_setup()
 {
   // Register all tasks on their assigned cores
@@ -18,7 +27,11 @@ void scheduler_setup()
   }
 }
 
-// Generic task callback
+/**
+ * @brief Generic callback function for tasks. Allows greater flexibility for one-shot tasks
+ *
+ * @param parameter argument to pass to the specific task callback
+ */
 void taskCallback(void *parameter)
 {
   TASK_T *task = (TASK_T *)parameter;
@@ -37,6 +50,10 @@ void taskCallback(void *parameter)
   }
 }
 
+/**
+ * @brief LED update task callback
+ *
+ */
 void ledUpdateCallback(void)
 {
   fxctrlr.update(); // Refresh strip peripheral

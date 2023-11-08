@@ -8,7 +8,7 @@
 #define SSID_PREF "SSID"
 #define PASSWORD_PREF "PASSWORD"
 
-Preferences preferences;
+extern Preferences preferences;
 
 #define READ_ONLY true
 #define READ_WRITE false

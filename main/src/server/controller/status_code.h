@@ -1,0 +1,13 @@
+#ifndef _STATUS_CODE_H_
+#define _STATUS_CODE_H_
+
+
+#define STATUS_OK 200
+
+#define STATUS_BAD_REQUEST 400
+#define STATUS_NOT_FOUND 404
+
+#define STATUS_INTERNAL_SERVER_ERROR 500
+
+
+#endif // _STATUS_CODE_H_

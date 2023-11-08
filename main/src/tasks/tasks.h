@@ -1,8 +1,8 @@
 #ifndef _TASKS_H_
 #define _TASKS_H_
 
-#include "led.h" // Not used in this file but doesn't seem to run without it ¯\_(ツ)_/¯
-#include "server.h"
+#include <Arduino.h>
+#include <stdint.h>
 
 #define DEFAULT_STACK_SIZE 10000 // TODO: Revisit this might need to define this per task
 #define CORE0 0
@@ -29,9 +29,7 @@ typedef struct
 
 void ledUpdateCallback(void);
 
-TASK_T system_tasks[] = {
-    {"LED Update", &ledUpdateCallback, LED_UPDATE_TASK_FREQUENCY, BASE_PRIORITY, CORE1},
-};
+extern TASK_T system_tasks[];
 
 void scheduler_setup(void);
 void taskCallback(void *);

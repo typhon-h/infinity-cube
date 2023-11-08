@@ -1,51 +1,17 @@
-#include "header/led.h"
+#include "led.h"
 #include <FastLED.h>
 #include <FastFX.h>
 #include <FFXCoreEffects.h>
 
+FFXController fxctrlr = FFXController();
+
+CRGB leds[NUM_LEDS];
+Section_t segments[CUBE_EDGES * 2];
+
 /**
- * @brief Initializes the strips within FastLED with default settings.
+ * @brief Register strip segments with the FX controller
  *
  */
-void led_setup()
-{
-  // FastLED Setup
-  FastLED.addLeds<LED_TYPE, LED_PIN>(leds, NUM_LEDS);
-
-  FastLED.setBrightness(DEFAULT_INTENSITY);
-  FastLED.setCorrection(TypicalLEDStrip);
-
-  FastLED.setMaxPowerInVoltsAndMilliamps(LED_OPERATING_V, MAX_CURRENT_MA);
-
-  FastLED.clear();
-
-  // FastFX Setup
-  fxctrlr.initialize(new FFXFastLEDPixelController(leds, NUM_LEDS));
-  fxctrlr.getPrimarySegment()->setBrightness(DEFAULT_INTENSITY);
-
-  segment_init();
-
-  // TODO: Temporary chase effect to test segments and direction symmetry
-  for (int vertex = 0; vertex < CUBE_VERTICES; vertex++)
-  {
-    for (int segment = vertex * SEGMENT_PER_VERTEX; segment < ((vertex * SEGMENT_PER_VERTEX) + SEGMENT_PER_VERTEX); segment++)
-    {
-      FFXSegment *seg = segments[segment].segment;
-      seg->setFX(new ChaseFX(seg->getLength()));                                    // Change the FX class here for cool things :)
-      seg->getFX()->getFXColor().setPalette(NamedPalettes::getInstance()["multi"]); // Change the Palette here for more cool things :)
-
-      seg->setOpacity(DEFAULT_INTENSITY);
-
-      // Alternate direction of even/odd vertices
-      // Reverse the fx direction of strips with flipped directions from vertex
-      if ((vertex % 2 == 0 && segments[segment].direction == IN) || (vertex % 2 != 0 && segments[segment].direction == OUT))
-      {
-        seg->getFX()->setMovement(FFXBase::MovementType::MVT_BACKWARD);
-      }
-    }
-  }
-}
-
 void segment_init()
 {
   // TODO: possibly extract indices to ENUM or similar
@@ -89,4 +55,47 @@ void segment_init()
   segments[21] = {fxctrlr.addSegment("7X", SEGMENT_OUT_VERTEX_START_INDEX(8), SEGMENT_OUT_VERTEX_END_INDEX(8)), X, OUT};
   segments[22] = {fxctrlr.addSegment("7Y", SEGMENT_IN_VERTEX_START_INDEX(7), SEGMENT_IN_VERTEX_END_INDEX(7)), Y, IN};
   segments[23] = {fxctrlr.addSegment("7Z", SEGMENT_IN_VERTEX_START_INDEX(11), SEGMENT_IN_VERTEX_END_INDEX(11)), Z, IN};
+}
+
+/**
+ * @brief Initializes the strips within FastLED with default settings.
+ *
+ */
+void led_setup()
+{
+  // FastLED Setup
+  FastLED.addLeds<LED_TYPE, LED_PIN>(leds, NUM_LEDS);
+
+  FastLED.setBrightness(DEFAULT_INTENSITY);
+  FastLED.setCorrection(TypicalLEDStrip);
+
+  FastLED.setMaxPowerInVoltsAndMilliamps(LED_OPERATING_V, MAX_CURRENT_MA);
+
+  FastLED.clear();
+
+  // FastFX Setup
+  fxctrlr.initialize(new FFXFastLEDPixelController(leds, NUM_LEDS));
+  fxctrlr.getPrimarySegment()->setBrightness(DEFAULT_INTENSITY);
+
+  segment_init();
+
+  // TODO: Temporary chase effect to test segments and direction symmetry
+  for (int vertex = 0; vertex < CUBE_VERTICES; vertex++)
+  {
+    for (int segment = vertex * SEGMENT_PER_VERTEX; segment < ((vertex * SEGMENT_PER_VERTEX) + SEGMENT_PER_VERTEX); segment++)
+    {
+      FFXSegment *seg = segments[segment].segment;
+      seg->setFX(new ChaseFX(seg->getLength()));                                    // Change the FX class here for cool things :)
+      seg->getFX()->getFXColor().setPalette(NamedPalettes::getInstance()["multi"]); // Change the Palette here for more cool things :)
+
+      seg->setOpacity(DEFAULT_INTENSITY);
+
+      // Alternate direction of even/odd vertices
+      // Reverse the fx direction of strips with flipped directions from vertex
+      if ((vertex % 2 == 0 && segments[segment].direction == IN) || (vertex % 2 != 0 && segments[segment].direction == OUT))
+      {
+        seg->getFX()->setMovement(FFXBase::MovementType::MVT_BACKWARD);
+      }
+    }
+  }
 }
