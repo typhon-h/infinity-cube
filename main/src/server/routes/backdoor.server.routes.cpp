@@ -9,5 +9,5 @@
  */
 void backdoor_routes(AsyncWebServer *server)
 {
-    server->on(strcat(BACKDOOR_ROUTE, "/reset"), HTTP_GET, resetBoard);
+    server->on((String(BACKDOOR_ROUTE) + "/reset").c_str(), HTTP_GET, resetBoard);
 }

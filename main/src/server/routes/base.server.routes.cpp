@@ -13,5 +13,5 @@ void base_routes(AsyncWebServer *server)
     server->onNotFound(notFound);
 
     // Set Wifi credentials
-    server->on(strcat(BASE_ROUTE, "/connect"), HTTP_POST, authorizeWifi);
+    server->on((String(BASE_ROUTE) + "/connect").c_str(), HTTP_POST, authorizeWifi);
 }

@@ -13,7 +13,7 @@ void authorizeWifi(AsyncWebServerRequest *request)
     if (request->hasParam(SSID_PREF) && request->hasParam(PASSWORD_PREF))
     {
         setWifiCredentials(request->getParam(SSID_PREF)->value(), request->getParam(PASSWORD_PREF)->value());
-        request->send(STATUS_OK, "text/plain", "Updated.");
+        request->send(STATUS_OK, "text/plain", "Wifi credentials updated successfully");
         delay(1000); // Buffer to allow response to send
         ESP.restart();
     }

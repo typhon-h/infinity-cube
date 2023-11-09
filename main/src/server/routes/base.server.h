@@ -6,7 +6,7 @@
 #include <ESPAsyncWebServer.h>
 #include "../server.h"
 
-#define BASE_ROUTE "/"
+#define BASE_ROUTE ""
 
 void base_routes(AsyncWebServer *server);
 
