@@ -19,12 +19,13 @@ TOTAL_LEDS = 120
 CUBE_EDGES = 12
 MAX_LEVEL = 255
 
-try: # Idenfity port and configure serial
+try:  # Idenfity port and configure serial
     PORT = sys.argv[1]
-    arduino = serial.Serial(port=PORT, baudrate=115200, timeout=0.1, dsrdtr=False, rtscts=False)
+    arduino = serial.Serial(port=PORT, baudrate=115200,
+                            timeout=0.1, dsrdtr=False, rtscts=False)
     SERIAL_MODE = True
-except Exception as e: # Disable serial mode if port cannot be found
-    print(e)
+except Exception as e:  # Disable serial mode if port cannot be found
+    print(f'\n\n{e}\n\n')
     SERIAL_MODE = False
 
 # Starting bottom right going anti-clockwise.
@@ -41,18 +42,18 @@ vertices = (
 )
 
 edges = (  # Order of edges as defined in wiring diagram
-    (0,1),
-    (1,4),
-    (1,2),
-    (2,5),
-    (2,3),
-    (3,6),
-    (3,0),
-    (0,7),
-    (7,4),
-    (4,5),
-    (5,6),
-    (6,7)
+    (0, 1),
+    (1, 4),
+    (1, 2),
+    (2, 5),
+    (2, 3),
+    (3, 6),
+    (3, 0),
+    (0, 7),
+    (7, 4),
+    (4, 5),
+    (5, 6),
+    (6, 7)
 )
 
 
@@ -169,7 +170,10 @@ def main():
 
         # Read serial data
         if SERIAL_MODE:
-            data = arduino.readline()
+            try:
+                data = arduino.readline()
+            except serial.serialutil.SerialException:
+                data = []
             if len(data) == 0:
                 print("Serial Empty")
                 continue
