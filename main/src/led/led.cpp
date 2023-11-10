@@ -85,8 +85,14 @@ void led_setup()
     for (int segment = vertex * SEGMENT_PER_VERTEX; segment < ((vertex * SEGMENT_PER_VERTEX) + SEGMENT_PER_VERTEX); segment++)
     {
       FFXSegment *seg = segments[segment].segment;
-      seg->setFX(new ChaseFX(seg->getLength()));                                    // Change the FX class here for cool things :)
-      seg->getFX()->getFXColor().setPalette(NamedPalettes::getInstance()["multi"]); // Change the Palette here for more cool things :)
+
+      ChaseFX *fx = new ChaseFX(seg->getLength());
+      fx->setDotSpacing(0);
+      fx->setBlurAmount(0);
+      fx->setDotWidth(1);
+
+      seg->setFX(fx);                                                             // Change the FX class here for cool things :)
+      seg->getFX()->getFXColor().setPalette(NamedPalettes::getInstance()["rwb"]); // Change the Palette here for more cool things :)
 
       seg->setOpacity(DEFAULT_INTENSITY);
 
