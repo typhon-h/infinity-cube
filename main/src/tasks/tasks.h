@@ -22,7 +22,7 @@ typedef struct
 {
   const char *name;
   void (*callback)(void);
-  uint16_t frequency;
+  float frequency;
   TASK_PRIORITY_T priority;
   BaseType_t core;
 } TASK_T;

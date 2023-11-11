@@ -14,6 +14,7 @@
 #define LED_OPERATING_V 5
 #define DEFAULT_INTENSITY 255
 #define DEFAULT_SATURATION 255
+#define SEGMENT_OPACITY 255
 
 #define NUM_LEDS 120
 
@@ -21,6 +22,8 @@
 #define CUBE_VERTICES 8
 #define LED_PER_EDGE (NUM_LEDS / CUBE_EDGES)
 #define INDEX_FROM_EDGE(X) (X * LED_PER_EDGE)
+
+#define NUM_SEGMENTS (CUBE_EDGES * 2)
 
 // Equations to determine start/end of a segment based on the data direction
 //  and position in the strip. Broken into two catergories - DATA-OUT of a vertex | DATA-IN to a vertex
@@ -56,8 +59,11 @@ typedef struct
 } Section_t;
 
 // Define segments to be re-arranged into different symmetry patterns
-extern Section_t segments[CUBE_EDGES * 2];
+extern Section_t segments[NUM_SEGMENTS];
+
+extern uint8_t currentIntensity;
 
 void led_setup(void);
+void sync_led(void);
 
 #endif // _LED_H_
