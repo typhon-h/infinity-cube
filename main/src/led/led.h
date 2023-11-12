@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define LED_PIN 3 // TODO: Set pin
+#define LED_PIN 13 // TODO: Set pin
 #define LED_TYPE NEOPIXEL
 #define MAX_CURRENT_MA 2000 // TODO: Determine max draw - probably 2500ish
 #define LED_OPERATING_V 5
