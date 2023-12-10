@@ -119,3 +119,38 @@ FFXBase::MovementType getInverseDirection(FFXBase::MovementType dir)
 
     return inverse;
 }
+
+/**
+ * @brief Get the string name of an effect
+ * 
+ * @param effect effect to retrieve name of
+ * @return std::string string name of the effect
+ */
+std::string effectName(EFFECT_T effect)
+{
+    switch (effect)
+    {
+    case CHASE:
+        return "chase";
+    case CYCLE:
+        return "cycle";
+    case CYLON:
+        return "cylon";
+    case JUGGLE:
+        return "juggle";
+    case MOTION:
+        return "motion";
+    case PACIFICA:
+        return "pacifica";
+    case PALETTE:
+        return "palette";
+    case RAINBOW:
+        return "rainbow";
+    case TWINKLE:
+        return "twinkle";
+    case SOLID:
+        return "solid";
+    default:
+        return "unknown";
+    }
+}

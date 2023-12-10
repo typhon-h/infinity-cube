@@ -5,6 +5,7 @@
 
 #include "routes/backdoor.server.h"
 #include "routes/base.server.h"
+#include "routes/led.server.h"
 
 #include "../../preferences.h"
 
@@ -23,6 +24,7 @@ void server_setup()
     // Define routes
     backdoor_routes(&server);
     base_routes(&server);
+    led_routes(&server);
   }
 }
 

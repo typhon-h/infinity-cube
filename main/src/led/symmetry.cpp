@@ -121,3 +121,26 @@ void symmetry_cyclic()
         toInvert[i]->getFX()->setMovement(getInverseDirection(currentDirection));
     }
 }
+
+/**
+ * @brief Get the string name of a symmetry
+ * 
+ * @param symmetry symmetry to retrieve name of
+ * @return std::string string name of the symmetry
+ */
+std::string symmetryName(SYMMETRY_T symmetry)
+{
+    switch (symmetry)
+    {
+    case NONE:
+        return "none";
+    case VERTEX:
+        return "vertex";
+    case MIRROR:
+        return "mirror";
+    case CYCLIC:
+        return "cyclic";
+    default:
+        return "unknown";
+    }
+}

@@ -38,5 +38,6 @@ extern uint8_t currentSpeed;
 
 FFXBase *getEffect(uint16_t length);
 FFXBase::MovementType getInverseDirection(FFXBase::MovementType dir);
+std::string effectName(EFFECT_T effect);
 
 #endif // _EFFECT_H_

@@ -12,6 +12,8 @@ typedef enum
     CYCLIC
 } SYMMETRY_T;
 
+std::string symmetryName(SYMMETRY_T symmetry);
+
 void update_symmetry(void);
 
 // Symmetry functions
