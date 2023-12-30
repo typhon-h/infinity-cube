@@ -13,10 +13,17 @@ void led_routes(AsyncWebServer *server);
 
 // Controller
 void activeEffect(AsyncWebServerRequest *request);
-
+void setActiveEffect(AsyncWebServerRequest *request);
 // ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 // Model
-// Define model functions here...
+bool setName(String name);
+bool setSpeed(String speed);
+bool setSymmetry(String symmetry);
+bool setDirection(String direction);
+bool setDotWidth(String width);
+bool setDotSpacing(String spacing);
+bool setDotBlur(String blur);
+bool setMotionRange(String range);
 
 #endif // LED_SERVER_H_

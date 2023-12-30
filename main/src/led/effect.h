@@ -18,7 +18,8 @@ typedef enum
     PALETTE,
     RAINBOW,
     SOLID,
-    TWINKLE
+    TWINKLE,
+    NUM_EFFECTS
 } EFFECT_T;
 
 // Chase Parameters
@@ -35,6 +36,13 @@ extern FFXBase::MovementType currentDirection;
 extern CRGBPalette16 currentPalette;
 extern SYMMETRY_T currentSymmetry;
 extern uint8_t currentSpeed;
+
+const int MAX_SPEED = 255;
+const int MAX_DOT_WIDTH = 255;
+const int MAX_DOT_SPACING = 255;
+const int MAX_DOT_BLUR = 255;
+const int MAX_MOTION_RANGE = 255;
+const int NUM_DIRECTIONS = 5; // not ideal but will do for now as enum is part of FFX
 
 FFXBase *getEffect(uint16_t length);
 FFXBase::MovementType getInverseDirection(FFXBase::MovementType dir);

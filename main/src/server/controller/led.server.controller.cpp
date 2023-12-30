@@ -2,6 +2,7 @@
 #include "status_code.h"
 #include "../routes/led.server.h"
 #include "../../led/effect.h"
+#include "../../led/led.h"
 #include <FastFX.h>
 #include <ArduinoJson.h>
 
@@ -22,4 +23,77 @@ void activeEffect(AsyncWebServerRequest *request)
     serializeJson(body, response);
 
     request->send(STATUS_OK, "application/json", response);
+}
+
+void setActiveEffect(AsyncWebServerRequest *request)
+{
+    bool isValid = true;
+
+    EFFECT_T oldName = currentEffect;
+    FFXBase::MovementType oldDirection = currentDirection;
+    SYMMETRY_T oldSymmetry = currentSymmetry;
+    uint8_t oldSpeed = currentSpeed;
+    uint8_t oldDotWidth = dotWidth;
+    uint8_t oldDotSpacing = dotSpacing;
+    uint8_t oldDotBlur = dotBlur;
+    uint8_t oldMotionRange = motionRange;
+
+    if (request->hasParam("name"))
+    {
+        isValid = setName(request->arg("name"));
+    }
+
+    if (isValid && request->hasParam("speed"))
+    {
+        isValid = setSpeed(request->arg("speed"));
+    }
+
+    if (isValid && request->hasParam("symmetry"))
+    {
+        isValid = setSymmetry(request->arg("symmetry"));
+    }
+
+    if (isValid && request->hasParam("direction"))
+    {
+        isValid = setDirection(request->arg("direction"));
+    }
+
+    if (isValid && request->hasParam("dotWidth"))
+    {
+        isValid = setDotWidth(request->arg("dotWidth"));
+    }
+
+    if (isValid && request->hasParam("dotSpacing"))
+    {
+        isValid = setDotSpacing(request->arg("dotSpacing"));
+    }
+
+    if (isValid && request->hasParam("dotBlur"))
+    {
+        isValid = setDotBlur(request->arg("dotBlur"));
+    }
+
+    if (isValid && request->hasParam("motionRange"))
+    {
+        isValid = setMotionRange(request->arg("motionRange"));
+    }
+
+    if (isValid)
+    {
+        sync_led();
+        request->send(STATUS_OK, "text/plain", "Effect updated successfully.");
+    }
+    else
+    {
+        currentEffect = oldName;
+        currentDirection = oldDirection;
+        currentSymmetry = oldSymmetry;
+        currentSpeed = oldSpeed;
+        dotWidth = oldDotWidth;
+        dotSpacing = oldDotSpacing;
+        dotBlur = oldDotBlur;
+        motionRange = oldMotionRange;
+        //  TODO: update this to be more specific about what went wrong
+        request->send(STATUS_BAD_REQUEST, "text/plain", "Effect update failed. One or more fields are malformed.");
+    }
 }

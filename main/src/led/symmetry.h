@@ -9,7 +9,8 @@ typedef enum
     NONE,
     VERTEX,
     MIRROR,
-    CYCLIC
+    CYCLIC,
+    NUM_SYMMETRIES
 } SYMMETRY_T;
 
 std::string symmetryName(SYMMETRY_T symmetry);

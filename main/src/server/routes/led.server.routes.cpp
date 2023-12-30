@@ -10,4 +10,5 @@
 void led_routes(AsyncWebServer *server)
 {
     server->on((String(LED_ROUTE) + "/effect").c_str(), HTTP_GET, activeEffect);
+    server->on((String(LED_ROUTE) + "/effect").c_str(), HTTP_POST, setActiveEffect);
 }
