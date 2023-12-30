@@ -14,6 +14,8 @@ void led_routes(AsyncWebServer *server);
 // Controller
 void activeEffect(AsyncWebServerRequest *request);
 void setActiveEffect(AsyncWebServerRequest *request);
+
+void setLedState(AsyncWebServerRequest *request);
 // ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 // Model

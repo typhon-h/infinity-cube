@@ -97,3 +97,28 @@ void setActiveEffect(AsyncWebServerRequest *request)
         request->send(STATUS_BAD_REQUEST, "text/plain", "Effect update failed. One or more fields are malformed.");
     }
 }
+
+void setLedState(AsyncWebServerRequest *request)
+{
+    bool isValid = true;
+
+    uint8_t oldIntensity = currentIntensity;
+
+    if (request->hasParam("intensity"))
+    {
+        uint8_t intensity = request->arg("intensity").toInt();
+        currentIntensity = intensity;
+    }
+
+    if (isValid)
+    {
+        sync_led();
+        // TODO: update to notify per setting
+        request->send(STATUS_OK, "text/plain", "LED status updated successfully");
+    }
+    else
+    {
+        currentIntensity = oldIntensity;
+        request->send(STATUS_BAD_REQUEST, "text/plain", "One or more parameters were malformed");
+    }
+}

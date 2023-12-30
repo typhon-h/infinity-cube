@@ -65,13 +65,18 @@ void segment_init()
   }
 }
 
+void update_brightness() {
+  FastLED.setBrightness(currentIntensity);
+  fxctrlr.setBrightness(currentIntensity);
+}
+
 /**
  * @brief Updates the led effects with all of the specified parameters
  *
  */
 void sync_led()
 {
-  fxctrlr.setBrightness(currentIntensity);
+  update_brightness();
   update_symmetry();
 }
 
