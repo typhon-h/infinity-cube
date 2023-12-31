@@ -10,6 +10,7 @@ FFXController fxctrlr = FFXController();
 
 CRGB leds[NUM_LEDS];
 Section_t segments[CUBE_EDGES * 2];
+bool led_state = true;
 
 /**
  * @brief Register strip segments with the FX controller
@@ -65,9 +66,16 @@ void segment_init()
   }
 }
 
-void update_brightness() {
+void update_brightness()
+{
   FastLED.setBrightness(currentIntensity);
   fxctrlr.setBrightness(currentIntensity);
+}
+
+void disable_led()
+{
+  fill_solid(leds, NUM_LEDS, CRGB::Black);
+  FastLED.show();
 }
 
 /**
@@ -76,8 +84,11 @@ void update_brightness() {
  */
 void sync_led()
 {
-  update_brightness();
-  update_symmetry();
+  if (led_state)
+  {
+    update_brightness();
+    update_symmetry();
+  }
 }
 
 /**

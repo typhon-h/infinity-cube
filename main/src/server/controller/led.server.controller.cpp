@@ -108,17 +108,15 @@ void setLedState(AsyncWebServerRequest *request)
     {
         uint8_t intensity = request->arg("intensity").toInt();
         currentIntensity = intensity;
+        sync_led();
     }
 
-    if (isValid)
+    if (request->hasParam("power"))
     {
-        sync_led();
-        // TODO: update to notify per setting
-        request->send(STATUS_OK, "text/plain", "LED status updated successfully");
+        bool power = request->arg("power").toInt();
+        led_state = power;
     }
-    else
-    {
-        currentIntensity = oldIntensity;
-        request->send(STATUS_BAD_REQUEST, "text/plain", "One or more parameters were malformed");
-    }
+
+    // TODO: update to notify per setting
+    request->send(STATUS_OK, "text/plain", "LED status updated successfully");
 }

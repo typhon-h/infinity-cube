@@ -65,5 +65,8 @@ extern uint8_t currentIntensity;
 
 void led_setup(void);
 void sync_led(void);
+void disable_led(void);
+
+extern bool led_state;
 
 #endif // _LED_H_

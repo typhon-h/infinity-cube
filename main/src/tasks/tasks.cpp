@@ -56,5 +56,15 @@ void taskCallback(void *parameter)
  */
 void ledUpdateCallback(void)
 {
-  fxctrlr.update(); // Refresh strip peripheral
+  static bool enabled = true;
+  if (led_state)
+  {
+    enabled = true;
+    fxctrlr.update(); // Refresh strip peripheral
+  }
+  else if (enabled)
+  {
+    enabled = false;
+    disable_led();
+  }
 }
