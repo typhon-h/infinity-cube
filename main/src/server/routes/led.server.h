@@ -15,6 +15,7 @@ void led_routes(AsyncWebServer *server);
 void activeEffect(AsyncWebServerRequest *request);
 void setActiveEffect(AsyncWebServerRequest *request);
 
+void ledState(AsyncWebServerRequest *request);
 void setLedState(AsyncWebServerRequest *request);
 // ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 

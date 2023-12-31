@@ -98,6 +98,19 @@ void setActiveEffect(AsyncWebServerRequest *request)
     }
 }
 
+void ledState(AsyncWebServerRequest *request)
+{
+    StaticJsonDocument<255> body;
+
+    body["power"] = led_state;
+    body["intensity"] = currentIntensity;
+
+    String response;
+    serializeJson(body, response);
+
+    request->send(STATUS_OK, "application/json", response);
+}
+
 void setLedState(AsyncWebServerRequest *request)
 {
     bool isValid = true;
