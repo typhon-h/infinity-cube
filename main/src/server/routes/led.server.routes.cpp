@@ -9,9 +9,9 @@
  */
 void led_routes(AsyncWebServer *server)
 {
-    server->on((String(LED_ROUTE)).c_str(), HTTP_GET, ledState);
-    server->on((String(LED_ROUTE)).c_str(), HTTP_POST, setLedState);
-
     server->on((String(LED_ROUTE) + "/effect").c_str(), HTTP_GET, activeEffect);
     server->on((String(LED_ROUTE) + "/effect").c_str(), HTTP_POST, setActiveEffect);
+
+    server->on((String(LED_ROUTE)).c_str(), HTTP_GET, ledState);
+    server->on((String(LED_ROUTE)).c_str(), HTTP_POST, setLedState);
 }

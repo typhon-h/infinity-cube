@@ -115,3 +115,9 @@ void led_setup()
 
   sync_led();
 }
+
+CRGB string_to_crgb(String color)
+{
+  uint32_t conv = strtol(color.c_str(), nullptr, 16);
+  return (conv <= 0xFFFFFF) ? CRGB(conv) : CRGB::Black;
+}

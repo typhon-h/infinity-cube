@@ -19,7 +19,7 @@ uint8_t currentSpeed = 220;
 
 // Chase Parameters
 uint8_t dotWidth = 1;
-uint8_t dotSpacing = 0;
+uint8_t dotSpacing = 1;
 uint8_t dotBlur = 0;
 
 // Motion Parameters

@@ -67,6 +67,8 @@ void led_setup(void);
 void sync_led(void);
 void disable_led(void);
 
+CRGB string_to_crgb(String color);
+
 extern bool led_state;
 
 #endif // _LED_H_

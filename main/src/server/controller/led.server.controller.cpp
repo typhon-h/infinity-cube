@@ -32,6 +32,7 @@ void setActiveEffect(AsyncWebServerRequest *request)
     EFFECT_T oldName = currentEffect;
     FFXBase::MovementType oldDirection = currentDirection;
     SYMMETRY_T oldSymmetry = currentSymmetry;
+    CRGBPalette16 oldPalette = currentPalette;
     uint8_t oldSpeed = currentSpeed;
     uint8_t oldDotWidth = dotWidth;
     uint8_t oldDotSpacing = dotSpacing;
@@ -78,6 +79,11 @@ void setActiveEffect(AsyncWebServerRequest *request)
         isValid = setMotionRange(request->arg("motionRange"));
     }
 
+    if (isValid && request->hasParam("color"))
+    {
+        isValid = setPalette(request->arg("color"));
+    }
+
     if (isValid)
     {
         sync_led();
@@ -93,6 +99,7 @@ void setActiveEffect(AsyncWebServerRequest *request)
         dotSpacing = oldDotSpacing;
         dotBlur = oldDotBlur;
         motionRange = oldMotionRange;
+        currentPalette = oldPalette;
         //  TODO: update this to be more specific about what went wrong
         request->send(STATUS_BAD_REQUEST, "text/plain", "Effect update failed. One or more fields are malformed.");
     }

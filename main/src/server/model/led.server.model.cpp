@@ -1,6 +1,6 @@
 #include "../routes/led.server.h"
 #include "../../led/effect.h"
-
+#include "../../led/led.h"
 
 bool setName(String name)
 {
@@ -96,4 +96,43 @@ bool setMotionRange(String motion)
     }
 
     return false;
+}
+
+bool setPalette(String colors)
+{
+    CRGB values[4];
+    char colors_char[colors.length() + 1];
+    colors.toCharArray(colors_char, sizeof(colors_char));
+
+    char *token = strtok(colors_char, ",");
+
+    size_t i = 0;
+    while (i < 4 && token != NULL) // TODO: handling for invalid colors instead of black
+    {
+        values[i] = string_to_crgb(token);
+
+        token = strtok(NULL, ",");
+        i++;
+    }
+
+    CRGBPalette16 palette;
+    switch (i)
+    {
+    case 1:
+        palette = CRGBPalette16(values[0]);
+        break;
+    case 2:
+        palette = CRGBPalette16(values[0], values[1]);
+        break;
+    case 3:
+        palette = CRGBPalette16(values[0], values[1], values[2]);
+        break;
+    case 4:
+        palette = CRGBPalette16(values[0], values[1], values[2], values[3]);
+        break;
+    default:
+        return false;
+    }
+    currentPalette = palette;
+    return true;
 }

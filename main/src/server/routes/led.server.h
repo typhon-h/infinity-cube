@@ -28,5 +28,6 @@ bool setDotWidth(String width);
 bool setDotSpacing(String spacing);
 bool setDotBlur(String blur);
 bool setMotionRange(String range);
+bool setPalette(String colors);
 
 #endif // LED_SERVER_H_
