@@ -8,7 +8,7 @@
 
 void activeEffect(AsyncWebServerRequest *request)
 {
-    StaticJsonDocument<255> body;
+    StaticJsonDocument<2048> body;
 
     body["name"] = effectName(currentEffect);
     body["speed"] = currentSpeed;
@@ -18,6 +18,17 @@ void activeEffect(AsyncWebServerRequest *request)
     body["dot_spacing"] = dotSpacing;
     body["dotBlur"] = dotBlur;
     body["motion_range"] = motionRange;
+
+    JsonArray colorsArray = body.createNestedArray("color");
+
+    for (size_t i = 0; i < 16; i++)
+    {
+        JsonObject color = colorsArray.createNestedObject();
+        CRGB fromPalette = ColorFromPalette(currentPalette, i);
+        color["r"] = fromPalette.r;
+        color["g"] = fromPalette.g;
+        color["b"] = fromPalette.b;
+    }
 
     String response;
     serializeJson(body, response);
