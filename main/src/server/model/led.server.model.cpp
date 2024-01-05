@@ -98,9 +98,24 @@ bool setMotionRange(String motion)
     return false;
 }
 
-bool setPalette(String colors)
-{ // TODO: support multiple colors in palette
-    CRGBPalette16 palette = CRGBPalette16(string_to_crgb(colors));
-    currentPalette = palette;
+bool setPalette(AsyncWebServerRequest *request, bool colors[4])
+{
+    CRGB values[16];
+    int count = 0;
+    for (size_t i = 0; i < 4; i++)
+    {
+        if (colors[i])
+        {
+            values[count] = string_to_crgb(request->arg("color" + String(i + 1)));
+            count++;
+        }
+    }
+
+    for (size_t i = count; i < 16 - count; i++)
+    {
+        values[i] = CRGB::Black;
+    }
+
+    currentPalette = CRGBPalette16(values);
     return true;
 }

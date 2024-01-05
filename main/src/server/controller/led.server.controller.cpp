@@ -91,9 +91,22 @@ void setActiveEffect(AsyncWebServerRequest *request)
         isValid = setMotionRange(request->arg("motionRange"));
     }
 
-    if (isValid && request->hasParam("color"))
+    if (isValid)
     {
-        isValid = setPalette(request->arg("color"));
+        bool colors[4] = {
+            request->hasParam("color1"),
+            request->hasParam("color2"),
+            request->hasParam("color3"),
+            request->hasParam("color4")};
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (colors[i])
+            {
+                isValid = setPalette(request, colors);
+                break;
+            }
+        }
     }
 
     if (isValid)
