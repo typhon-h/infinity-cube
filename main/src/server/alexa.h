@@ -6,8 +6,6 @@
 
 #include "server.h"
 
-#define DEVICE_NAME "Infinity Cube"
-
 extern fauxmoESP fauxmo;
 
 void alexa_callback(void);

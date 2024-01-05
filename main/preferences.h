@@ -5,6 +5,8 @@
 #include <stdbool.h>
 
 #define DEVICE_NAME "Infinity Cube"
+#define DEVICE_MDNS "infcub"
+
 #define SSID_PREF "SSID"
 #define PASSWORD_PREF "PASSWORD"
 

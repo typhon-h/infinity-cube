@@ -2,6 +2,7 @@
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 #include "server.h"
+#include <ESPmDNS.h>
 
 #include "routes/backdoor.server.h"
 #include "routes/base.server.h"
@@ -19,7 +20,11 @@ void server_setup()
 {
   if (connectWifi())
   {
+    MDNS.begin(DEVICE_MDNS);
+
     server.begin(); // Async so determines best core to run on based on load
+
+    MDNS.addService("http", "tcp", PORT);
 
     // Define routes
     backdoor_routes(&server);

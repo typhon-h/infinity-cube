@@ -3,6 +3,7 @@
 #include "server.h"
 #include "../led/led.h"
 #include "../led/effect.h"
+#include "../../preferences.h"
 
 fauxmoESP fauxmo;
 
