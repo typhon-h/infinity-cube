@@ -9,7 +9,7 @@
 
 #include "../../preferences.h"
 
-AsyncWebServer server(80); // Reference to web server
+AsyncWebServer server(PORT); // Reference to web server
 
 /**
  * @brief Connect to network and assign routes

@@ -6,6 +6,7 @@
 #include <ESPAsyncWebServer.h>
 
 extern AsyncWebServer server;
+#define PORT 80
 
 void server_setup(void);
 boolean connectWifi(void);

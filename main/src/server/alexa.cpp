@@ -35,7 +35,7 @@ void sync_alexa()
 void alexa_setup()
 {
     fauxmo.createServer(false);
-    fauxmo.setPort(80); // This is required for gen3 devices
+    fauxmo.setPort(PORT); // This is required for gen3 devices
     fauxmo.enable(true);
     fauxmo.addDevice(DEVICE_NAME);
 
