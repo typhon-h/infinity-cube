@@ -2,6 +2,7 @@
 #include "status_code.h"
 #include "../../../preferences.h"
 #include "../routes/base.server.h"
+#include "../alexa.h"
 
 /**
  * @brief Set wifi credentials then reboot board to try to connect
@@ -30,5 +31,8 @@ void authorizeWifi(AsyncWebServerRequest *request)
  */
 void notFound(AsyncWebServerRequest *request)
 {
+    String body = (request->hasParam("body", true)) ? request->getParam("body", true)->value() : String();
+    if (fauxmo.process(request->client(), request->method() == HTTP_GET, request->url(), body))
+        return;
     request->send(STATUS_NOT_FOUND, "text/plain", "Doctor, are you there?");
 }

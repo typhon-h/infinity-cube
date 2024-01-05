@@ -1,9 +1,11 @@
 #include "tasks.h"
 #include "../led/led.h"
+#include "../server/alexa.h"
 
 // Set of task definition for the RTOS scheduler to execute
 TASK_T system_tasks[] = {
-    {"LED Update", &ledUpdateCallback, LED_UPDATE_TASK_FREQUENCY, BASE_PRIORITY, CORE1},
+    {"LED Update", &ledUpdateCallback, LED_UPDATE_TASK_FREQUENCY, LED_PRIORITY, CORE1},
+    {"Alexa", &alexa_callback, ALEXA_POLL_TASK_FREQUENCY, SERVER_PRIORITY, CORE1},
 };
 
 /**

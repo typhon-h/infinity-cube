@@ -12,10 +12,13 @@
 
 #define TASK_ONCE 0
 #define LED_UPDATE_TASK_FREQUENCY 60
+#define ALEXA_POLL_TASK_FREQUENCY 1
 
 typedef enum // Arrange enum by priority - lowest to highest
 {
   BASE_PRIORITY = 1,
+  SERVER_PRIORITY,
+  LED_PRIORITY,
 } TASK_PRIORITY_T;
 
 typedef struct
