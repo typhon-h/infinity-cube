@@ -1,12 +1,35 @@
 
 #include "alexa.h"
 #include "server.h"
+#include "../led/led.h"
+#include "../led/effect.h"
 
 fauxmoESP fauxmo;
 
 void alexa_callback()
 {
     fauxmo.handle();
+}
+
+void device_handler(unsigned char device_id, const char *device_name, bool state, unsigned char value, unsigned int hue, unsigned int saturation, unsigned int ct)
+{
+    currentIntensity = value;
+    // TODO: currently have to go custom -> other(alexa) -> white instead of custom -> white???
+    if (saturation != 1) // use 1 as custom color sat - unlikely to occur in actual color
+    {
+        currentPalette = CRGBPalette16(CRGB(fauxmo.getRed(device_id), fauxmo.getGreen(device_id), fauxmo.getBlue(device_id)));
+    }
+
+    led_state = state;
+
+    sync_led();
+}
+
+void sync_alexa()
+{
+    fauxmo.setState(static_cast<unsigned char>(0), static_cast<bool>(led_state), static_cast<unsigned char>(currentIntensity));
+
+    sync_led();
 }
 
 void alexa_setup()
@@ -16,18 +39,7 @@ void alexa_setup()
     fauxmo.enable(true);
     fauxmo.addDevice(DEVICE_NAME);
 
-    fauxmo.onSetState([](unsigned char device_id, const char *device_name, bool state, unsigned char value, unsigned int hue, unsigned int saturation, unsigned int ct)
-                      {
-                          // Callback when a command from Alexa is received.
-                          // You can use device_id or device_name to choose the element to perform an action onto (relay, LED,...)
-                          // State is a boolean (ON/OFF) and value a number from 0 to 255 (if you say "set kitchen light to 50%" you will receive a 128 here).
-                          // Just remember not to delay too much here, this is a callback, exit as soon as possible.
-                          // If you have to do something more involved here set a flag and process it in your main loop.
+    fauxmo.onSetState(device_handler);
 
-                          // if (0 == device_id) digitalWrite(RELAY1_PIN, state);
-                          // if (1 == device_id) digitalWrite(RELAY2_PIN, state);
-                          // if (2 == device_id) analogWrite(LED1_PIN, value);
-
-                          Serial.printf("[MAIN] Device #%d (%s) state: %s value: %d\n", device_id, device_name, state ? "ON" : "OFF", value);
-                      });
+    sync_alexa();
 }

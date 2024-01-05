@@ -14,7 +14,7 @@
 #define LED_TYPE NEOPIXEL
 #define MAX_CURRENT_MA 2000 // TODO: Determine max draw - probably 2500ish
 #define LED_OPERATING_V 5
-#define DEFAULT_INTENSITY 255
+#define DEFAULT_INTENSITY 254
 #define DEFAULT_SATURATION 255
 #define SEGMENT_OPACITY 255
 

@@ -5,6 +5,7 @@
 #include "../../led/led.h"
 #include <FastFX.h>
 #include <ArduinoJson.h>
+#include "../alexa.h"
 
 void activeEffect(AsyncWebServerRequest *request)
 {
@@ -97,7 +98,12 @@ void setActiveEffect(AsyncWebServerRequest *request)
 
     if (isValid)
     {
-        sync_led();
+        if (currentPalette != oldPalette) // TODO: make mono endpoint colors update alexa?
+        {                                 // color palette was updated via endpoint
+            CRGB color = ColorFromPalette(currentPalette, 0);
+            fauxmo.setState(static_cast<unsigned char>(0), led_state, 0, 1); // 1 saturation means custom palette
+        }
+        sync_alexa();
         request->send(STATUS_OK, "text/plain", "Effect updated successfully.");
     }
     else
@@ -138,8 +144,8 @@ void setLedState(AsyncWebServerRequest *request)
     if (request->hasParam("intensity"))
     {
         uint8_t intensity = request->arg("intensity").toInt();
-        currentIntensity = intensity;
-        sync_led();
+        currentIntensity = min(DEFAULT_INTENSITY, static_cast<int>(intensity)); // alexa goes weird when passed 255 intensity so cap at 254
+        sync_alexa();
     }
 
     if (request->hasParam("power"))
