@@ -1,4 +1,4 @@
-package com.typhonh.infinitycube.ui.theme
+package com.typhonh.infinitycube.view.theme
 
 import androidx.compose.ui.graphics.Color
 
