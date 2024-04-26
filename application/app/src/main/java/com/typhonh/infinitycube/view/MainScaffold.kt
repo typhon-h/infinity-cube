@@ -20,25 +20,32 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.typhonh.infinitycube.view.composable.sheet.PreferencesSettingsSheet
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScaffold(
     content: @Composable () -> Unit,
 ) {
+    var showSettingsSheet by remember { mutableStateOf(false) }
+
     Scaffold(
         content = { paddingValues ->
             Box(modifier = Modifier.padding(paddingValues).fillMaxSize(), contentAlignment = Alignment.Center) {
                 content()
             }
+            PreferencesSettingsSheet(showSettingsSheet, onDismissRequest = {showSettingsSheet = false})
         },
         topBar = {
             TopAppBar(title = {
-
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.BottomCenter){
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(text = "Infinity Cube", style = MaterialTheme.typography.displaySmall)
@@ -50,8 +57,9 @@ fun MainScaffold(
 
                     IconButton(modifier = Modifier.align(Alignment.TopEnd),
                         onClick = {
-
-                    }) {
+                            showSettingsSheet = true
+                        }
+                    ) {
                         Icon(
                             imageVector = Icons.Outlined.Settings,
                             contentDescription = "Settings"
