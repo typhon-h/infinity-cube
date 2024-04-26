@@ -15,12 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.typhonh.infinitycube.R
 import com.typhonh.infinitycube.view.MainScaffold
-import com.typhonh.infinitycube.view.composable.ColorSettingsSheet
-import com.typhonh.infinitycube.view.composable.EffectSettingsSheet
+import com.typhonh.infinitycube.view.composable.sheet.ColorSettingsSheet
+import com.typhonh.infinitycube.view.composable.sheet.EffectSettingsSheet
 import com.typhonh.infinitycube.view.composable.IntensitySlider
 import com.typhonh.infinitycube.view.composable.ModalToggle
 import com.typhonh.infinitycube.view.composable.PowerToggle
-import com.typhonh.infinitycube.view.composable.PresetSettingsSheet
+import com.typhonh.infinitycube.view.composable.sheet.PresetSettingsSheet
 
 @Composable
 fun HomeFragment() {

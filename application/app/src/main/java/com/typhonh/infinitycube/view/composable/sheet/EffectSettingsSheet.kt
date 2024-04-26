@@ -1,4 +1,4 @@
-package com.typhonh.infinitycube.view.composable
+package com.typhonh.infinitycube.view.composable.sheet
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,6 +17,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.typhonh.infinitycube.view.composable.DirectionSwitch
+import com.typhonh.infinitycube.view.composable.DotWidthSlider
+import com.typhonh.infinitycube.view.composable.EffectDropdown
+import com.typhonh.infinitycube.view.composable.SpeedSlider
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

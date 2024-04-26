@@ -1,4 +1,4 @@
-package com.typhonh.infinitycube.view.composable
+package com.typhonh.infinitycube.view.composable.sheet
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
