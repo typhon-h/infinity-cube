@@ -73,7 +73,7 @@ fun ColorSettingsSheet(state: Boolean, onDismissRequest: () -> Unit = {}) {
                                 modifier = Modifier.weight(0.15f).fillMaxHeight(),
                                 enabled = true // len > 1
                             ) {
-                                Icon(Icons.Default.Delete, contentDescription = "Remove Color")
+                                Icon(Icons.Default.Delete, contentDescription = "Remove Color", tint = MaterialTheme.colorScheme.error)
                             }
                         }
                     }
