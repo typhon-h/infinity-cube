@@ -16,9 +16,9 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ModalToggle(icon: Painter, text: String, description: String) {
+fun ModalToggle(icon: Painter, text: String, description: String, callback: () -> Unit = {}) {
     Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        IconButton(onClick = {},
+        IconButton(onClick = callback,
             modifier = Modifier
                 .clip(CircleShape)
                 .size(50.dp)
