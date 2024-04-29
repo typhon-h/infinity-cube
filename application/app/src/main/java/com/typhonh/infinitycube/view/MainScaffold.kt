@@ -28,12 +28,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.typhonh.infinitycube.controller.InfinityCubeViewModel
 import com.typhonh.infinitycube.view.composable.sheet.PreferencesSettingsSheet
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScaffold(
-    content: @Composable () -> Unit,
+    viewModel: InfinityCubeViewModel,
+    content: @Composable () -> Unit
 ) {
     var showSettingsSheet by remember { mutableStateOf(false) }
 
@@ -42,7 +44,7 @@ fun MainScaffold(
             Box(modifier = Modifier.padding(paddingValues).fillMaxSize(), contentAlignment = Alignment.Center) {
                 content()
             }
-            PreferencesSettingsSheet(showSettingsSheet, onDismissRequest = {showSettingsSheet = false})
+            PreferencesSettingsSheet(showSettingsSheet, onDismissRequest = {showSettingsSheet = false}, viewModel = viewModel)
         },
         topBar = {
             TopAppBar(title = {

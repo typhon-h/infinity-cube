@@ -1,5 +1,6 @@
 package com.typhonh.infinitycube.view.composable.sheet
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,17 +15,31 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.typhonh.infinitycube.controller.InfinityCubeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PreferencesSettingsSheet(state: Boolean, onDismissRequest: () -> Unit = {}) {
+fun PreferencesSettingsSheet(state: Boolean, onDismissRequest: () -> Unit = {}, viewModel: InfinityCubeViewModel) {
+    val context = LocalContext.current
+
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    var address by remember { mutableStateOf(viewModel.mdns_address)}
+
     if (state) {
         ModalBottomSheet(
-            onDismissRequest = onDismissRequest,
+            onDismissRequest = {
+                onDismissRequest()
+                address = viewModel.mdns_address
+            },
             sheetState = sheetState
         ) {
             Column(
@@ -50,9 +65,21 @@ fun PreferencesSettingsSheet(state: Boolean, onDismissRequest: () -> Unit = {}) 
                 Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                         Text("Address:")
-                        TextField("MyMDNS", {})
+                        TextField(address, onValueChange = {
+                            address = it
+                        })
                     }
-                    Button(onClick = {}, modifier = Modifier.padding(10.dp)) {
+                    Button(
+                        onClick = {
+                            if (viewModel.mdns_address != address) {
+                                viewModel.updateAddress(context, address)
+                                Toast.makeText(context, "Address Updated!", Toast.LENGTH_SHORT).show()
+                            }
+
+                        },
+                        modifier = Modifier.padding(10.dp),
+                        enabled = viewModel.mdns_address != address
+                    ) {
                         Text("Update Address")
                     }
                 }
