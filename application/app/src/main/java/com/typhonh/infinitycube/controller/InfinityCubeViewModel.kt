@@ -18,11 +18,11 @@ class InfinityCubeViewModel(): ViewModel() {
     private val DEFAULT_MDNS = "infcub.local"
 
 
-    var mdns_address: String by mutableStateOf(DEFAULT_MDNS)
+    var mdnsAddress: String by mutableStateOf(DEFAULT_MDNS)
 
     fun initDataStore(context: Context) {
         viewModelScope.launch {
-            mdns_address = getAddress(context)
+            mdnsAddress = getAddress(context)
         }
     }
 
@@ -38,7 +38,7 @@ class InfinityCubeViewModel(): ViewModel() {
                 currentPreferences[stringPreferencesKey(MDNS_KEY)] = newAddress
             }
 
-            mdns_address = getAddress(context)
+            mdnsAddress = getAddress(context)
         }
     }
 }

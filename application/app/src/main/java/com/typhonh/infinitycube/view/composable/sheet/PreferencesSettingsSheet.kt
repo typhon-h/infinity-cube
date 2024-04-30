@@ -31,17 +31,15 @@ fun PreferencesSettingsSheet(state: Boolean, onDismissRequest: () -> Unit = {}, 
     val context = LocalContext.current
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
-    var address by remember { mutableStateOf(viewModel.mdns_address)}
-
     if (state) {
         ModalBottomSheet(
             onDismissRequest = {
                 onDismissRequest()
-                address = viewModel.mdns_address
             },
             sheetState = sheetState
         ) {
+            var address by remember { mutableStateOf(viewModel.mdnsAddress)}
+
             Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -71,14 +69,14 @@ fun PreferencesSettingsSheet(state: Boolean, onDismissRequest: () -> Unit = {}, 
                     }
                     Button(
                         onClick = {
-                            if (viewModel.mdns_address != address) {
+                            if (viewModel.mdnsAddress != address) {
                                 viewModel.updateAddress(context, address)
                                 Toast.makeText(context, "Address Updated!", Toast.LENGTH_SHORT).show()
                             }
 
                         },
                         modifier = Modifier.padding(10.dp),
-                        enabled = viewModel.mdns_address != address
+                        enabled = viewModel.mdnsAddress != address
                     ) {
                         Text("Update Address")
                     }
