@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,8 +37,11 @@ fun HomeFragment(
     var showEffectSheet by remember { mutableStateOf(false) }
     var showPresetSheet by remember { mutableStateOf(false) }
 
+    val cubeState by viewModel.cubeState.collectAsState()
+
     LaunchedEffect(key1 = null) {
         viewModel.initDataStore(context)
+        viewModel.getCubeState()
     }
 
     MainScaffold(viewModel) {
@@ -49,7 +53,7 @@ fun HomeFragment(
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
             Column(modifier = Modifier.weight(0.5f), verticalArrangement = Arrangement.Center) {
-                PowerToggle() //TODO: Send current percentage here to display instead of "Off"
+                PowerToggle(cubeState.power)
             }
             Column(modifier = Modifier.weight(0.5f), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceAround) {
                 Row(modifier = Modifier.fillMaxWidth(),
@@ -66,7 +70,7 @@ fun HomeFragment(
                         showPresetSheet = true
                     }
                 }
-                IntensitySlider()
+                IntensitySlider(cubeState.intensity)
             }
         }
 

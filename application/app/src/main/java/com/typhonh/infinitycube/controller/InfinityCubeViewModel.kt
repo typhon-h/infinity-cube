@@ -9,6 +9,10 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.typhonh.infinitycube.dataStore
+import com.typhonh.infinitycube.model.CubeRepositoryImpl
+import com.typhonh.infinitycube.model.entity.CubeState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -17,8 +21,12 @@ class InfinityCubeViewModel(): ViewModel() {
     private val MDNS_KEY = "mdns_address"
     private val DEFAULT_MDNS = "infcub.local"
 
-
     var mdnsAddress: String by mutableStateOf(DEFAULT_MDNS)
+    private var cubeRepository = CubeRepositoryImpl(mdnsAddress)
+
+
+    private val _cubeState = MutableStateFlow(CubeState(false, 0))
+    val cubeState: StateFlow<CubeState> get() = _cubeState
 
     fun initDataStore(context: Context) {
         viewModelScope.launch {
@@ -41,4 +49,11 @@ class InfinityCubeViewModel(): ViewModel() {
             mdnsAddress = getAddress(context)
         }
     }
+
+    fun getCubeState() {
+        viewModelScope.launch {
+            _cubeState.value = cubeRepository.getCubeState()
+        }
+    }
+
 }

@@ -13,17 +13,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.typhonh.infinitycube.R
 
 @Composable
-fun PowerToggle(modifier: Modifier = Modifier) {
+fun PowerToggle(isOn: Boolean) {
     IconButton(
         onClick = {},
-        modifier = modifier.size(200.dp)
-            .border(Dp.Hairline, MaterialTheme.colorScheme.outline, CircleShape)
+        modifier = Modifier.size(200.dp)
+            .border(Dp.Hairline, if (isOn) Color.Green else MaterialTheme.colorScheme.outline, CircleShape)
     ) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Icon(
@@ -32,7 +33,7 @@ fun PowerToggle(modifier: Modifier = Modifier) {
                 modifier = Modifier.fillMaxSize(0.30f)
             )
 
-            Text("Off",
+            Text(if (isOn) "On" else "Off",
                 style = MaterialTheme.typography.labelLarge,
                 modifier = Modifier.padding(0.dp,75.dp,0.dp,0.dp))
         }

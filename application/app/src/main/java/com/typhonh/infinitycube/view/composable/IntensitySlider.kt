@@ -12,6 +12,7 @@ import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.SliderState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,8 +23,13 @@ import com.typhonh.infinitycube.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IntensitySlider() {
-    val sliderState by remember { mutableStateOf(SliderState(value = 0.5f)) }
+fun IntensitySlider(intensity: Int) {
+    val INTENSITY_CAP = 254f // Not 255
+    val sliderState by remember { mutableStateOf(SliderState(value = 0f, valueRange = 0f..INTENSITY_CAP)) }
+
+    LaunchedEffect(key1 = intensity) {
+        sliderState.value = intensity.toFloat()
+    }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween){
@@ -35,7 +41,7 @@ fun IntensitySlider() {
             Slider(
                 state = sliderState,
                 colors = SliderDefaults.colors(
-                    activeTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = sliderState.value),
+                    activeTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = (sliderState.value/INTENSITY_CAP)),
                     inactiveTrackColor = MaterialTheme.colorScheme.background
                 ),
                 modifier = Modifier.weight(0.8f)
@@ -48,6 +54,6 @@ fun IntensitySlider() {
 
         }
 
-        Text("${(sliderState.value * 100).toInt()}%", style = MaterialTheme.typography.titleLarge)
+        Text("${((sliderState.value/INTENSITY_CAP) * 100).toInt()}%", style = MaterialTheme.typography.titleLarge)
     }
 }
