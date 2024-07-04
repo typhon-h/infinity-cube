@@ -6,6 +6,7 @@
 #include <FFXCoreEffects.h>
 
 #include <stdint.h>
+#include <string>
 
 // Default values ——————————————————————————————————
 

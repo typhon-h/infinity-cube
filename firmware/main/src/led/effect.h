@@ -2,6 +2,8 @@
 #define _EFFECT_H_
 
 #include <stdint.h>
+#include <string>
+
 #include "symmetry.h"
 
 #include <FastFX.h>

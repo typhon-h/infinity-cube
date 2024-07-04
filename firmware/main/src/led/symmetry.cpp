@@ -5,6 +5,8 @@
 #include <FastFX.h>
 #include <FFXCoreEffects.h>
 
+#include <string>
+
 /**
  * @brief Update the symmetry pattern based on the current value
  *

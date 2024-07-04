@@ -103,7 +103,7 @@ void led_setup()
   FastLED.setBrightness(currentIntensity);
   FastLED.setCorrection(TypicalLEDStrip);
 
-  FastLED.setMaxPowerInVoltsAndMilliamps(LED_OPERATING_V, MAX_CURRENT_MA);
+  // FastLED.setMaxPowerInVoltsAndMilliamps(LED_OPERATING_V, MAX_CURRENT_MA);
 
   FastLED.clear();
 

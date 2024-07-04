@@ -153,8 +153,6 @@ void setLedState(AsyncWebServerRequest *request)
 {
     bool isValid = true;
 
-    uint8_t oldIntensity = currentIntensity;
-
     if (request->hasParam("intensity"))
     {
         uint8_t intensity = request->arg("intensity").toInt();

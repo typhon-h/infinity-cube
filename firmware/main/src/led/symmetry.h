@@ -4,6 +4,8 @@
 #include <FastFX.h>
 #include <FFXCoreEffects.h>
 
+#include <string>
+
 typedef enum
 {
     NONE,
