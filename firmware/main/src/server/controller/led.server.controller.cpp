@@ -117,7 +117,8 @@ void setActiveEffect(AsyncWebServerRequest *request)
             fauxmo.setState(static_cast<unsigned char>(0), led_state, 0, 1); // 1 saturation means custom palette
         }
         sync_alexa();
-        request->send(STATUS_OK, "text/plain", "Effect updated successfully.");
+        // Respond with the updated effect via the getter
+        activeEffect(request);
     }
     else
     {
@@ -167,6 +168,6 @@ void setLedState(AsyncWebServerRequest *request)
         led_state = power;
     }
 
-    // TODO: update to notify per setting
-    request->send(STATUS_OK, "text/plain", "LED status updated successfully");
+    // Return the updated result via the getter
+    ledState(request);
 }
