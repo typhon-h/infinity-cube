@@ -33,9 +33,9 @@ class CubeRepositoryImpl(private var baseUrl: String): CubeRepository {
             if (response.isSuccessful) {
                 response.body() ?: CubeState(false, 0)
             } else {
-                CubeState(false, 0)
+                throw NoSuchElementException()
             }
-        } catch (exception: Exception) {
+        } catch (exception: NoSuchElementException) {
             CubeState(false, 0)
         }
     }
@@ -58,9 +58,9 @@ class CubeRepositoryImpl(private var baseUrl: String): CubeRepository {
             if (response.isSuccessful) {
                 response.body() ?: defaultEffect
             } else {
-                defaultEffect
+                throw NoSuchElementException()
             }
-        } catch (exception: Exception) {
+        } catch (exception: NoSuchElementException) {
             defaultEffect
         }
     }
