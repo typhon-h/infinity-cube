@@ -35,7 +35,7 @@ class CubeRepositoryImpl(private var baseUrl: String): CubeRepository {
             } else {
                 throw NoSuchElementException()
             }
-        } catch (exception: NoSuchElementException) {
+        } catch (exception: Exception) {
             CubeState(false, 0)
         }
     }
@@ -60,7 +60,7 @@ class CubeRepositoryImpl(private var baseUrl: String): CubeRepository {
             } else {
                 throw NoSuchElementException()
             }
-        } catch (exception: NoSuchElementException) {
+        } catch (exception: Exception) {
             defaultEffect
         }
     }
