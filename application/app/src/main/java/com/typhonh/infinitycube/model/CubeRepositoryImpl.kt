@@ -7,16 +7,20 @@ import com.typhonh.infinitycube.model.entity.EffectState
 import com.typhonh.infinitycube.model.entity.EffectType
 import com.typhonh.infinitycube.model.entity.SymmetryType
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.awaitResponse
 import retrofit2.converter.gson.GsonConverterFactory
+
 
 class CubeRepositoryImpl(private var baseUrl: String): CubeRepository {
     private val cubeApi: InfinityCubeApi
 
     init {
-         val mOkHttpClient = OkHttpClient
-            .Builder()
+        val logging = HttpLoggingInterceptor()
+        logging.setLevel(HttpLoggingInterceptor.Level.BASIC)
+        val mOkHttpClient = OkHttpClient.Builder()
+            .addInterceptor(logging)
             .build()
 
         val retrofit: Retrofit = Retrofit.Builder()
