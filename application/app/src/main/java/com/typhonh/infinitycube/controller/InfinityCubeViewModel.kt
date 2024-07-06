@@ -12,6 +12,8 @@ import kotlinx.coroutines.launch
 
 class InfinityCubeViewModel(): ViewModel() {
     private val mdnsManager = MdnsManager()
+    val mdnsAddress: String get() = mdnsManager.mdnsAddress
+
     private var cubeRepository = CubeRepositoryImpl(mdnsManager.mdnsAddress)
 
     private val _cubeState = MutableStateFlow(CubeState(false, 0))
@@ -34,6 +36,13 @@ class InfinityCubeViewModel(): ViewModel() {
             _cubeState.value = cubeRepository.setCubeState(
                 CubeState(isOn, _cubeState.value.intensity)
             )
+        }
+    }
+
+    fun setAddress(context: Context, newAddress: String) {
+        viewModelScope.launch {
+            mdnsManager.updateAddress(context, newAddress)
+            //TODO: Probably needs to resolve the new mdns + update the repository
         }
     }
 }

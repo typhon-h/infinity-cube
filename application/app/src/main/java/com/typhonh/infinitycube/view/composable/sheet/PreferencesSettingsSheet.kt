@@ -70,7 +70,7 @@ fun PreferencesSettingsSheet(state: Boolean, onDismissRequest: () -> Unit = {}, 
                     Button(
                         onClick = {
                             if (viewModel.mdnsAddress != address) {
-                                viewModel.updateAddress(context, address)
+                                viewModel.setAddress(context, address)
                                 Toast.makeText(context, "Address Updated!", Toast.LENGTH_SHORT).show()
                             }
 
