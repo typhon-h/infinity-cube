@@ -157,7 +157,6 @@ void setLedState(AsyncWebServerRequest *request)
     {
         uint8_t intensity = request->arg("intensity").toInt();
         currentIntensity = min(DEFAULT_INTENSITY, static_cast<int>(intensity)); // alexa goes weird when passed 255 intensity so cap at 254
-        sync_alexa();
     }
 
     if (request->hasParam("power"))
@@ -165,6 +164,8 @@ void setLedState(AsyncWebServerRequest *request)
         bool power = request->arg("power").toInt();
         led_state = power;
     }
+
+    sync_alexa();
 
     // Return the updated result via the getter
     ledState(request);
