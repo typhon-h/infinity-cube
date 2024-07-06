@@ -38,7 +38,7 @@ fun PreferencesSettingsSheet(state: Boolean, onDismissRequest: () -> Unit = {}, 
             },
             sheetState = sheetState
         ) {
-            var address by remember { mutableStateOf(viewModel.mdnsAddress)}
+            var address by remember { mutableStateOf(viewModel.getAddress())}
 
             Column(
                 modifier = Modifier.fillMaxSize(),
@@ -69,14 +69,14 @@ fun PreferencesSettingsSheet(state: Boolean, onDismissRequest: () -> Unit = {}, 
                     }
                     Button(
                         onClick = {
-                            if (viewModel.mdnsAddress != address) {
+                            if (viewModel.getAddress() != address) {
                                 viewModel.setAddress(context, address)
                                 Toast.makeText(context, "Address Updated!", Toast.LENGTH_SHORT).show()
                             }
 
                         },
                         modifier = Modifier.padding(10.dp),
-                        enabled = viewModel.mdnsAddress != address
+                        enabled = viewModel.getAddress() != address
                     ) {
                         Text("Update Address")
                     }

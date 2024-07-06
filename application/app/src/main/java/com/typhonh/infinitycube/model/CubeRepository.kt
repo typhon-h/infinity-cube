@@ -8,4 +8,5 @@ interface CubeRepository {
     suspend fun setCubeState(state: CubeState):  CubeState
 
     suspend fun getEffectState(): EffectState
+    fun setUrl(baseUrl: String)
 }

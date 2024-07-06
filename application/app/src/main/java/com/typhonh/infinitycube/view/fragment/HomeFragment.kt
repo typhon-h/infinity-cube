@@ -41,7 +41,6 @@ fun HomeFragment(
 
     LaunchedEffect(key1 = null) {
         viewModel.init(context)
-        viewModel.getCubeState()
     }
 
     MainScaffold(viewModel) {

@@ -14,9 +14,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 class CubeRepositoryImpl(private var baseUrl: String): CubeRepository {
-    private val cubeApi: InfinityCubeApi
+    private lateinit var cubeApi: InfinityCubeApi
 
     init {
+        setUrl(baseUrl)
+    }
+
+    override fun setUrl(baseUrl: String) {
+
         val logging = HttpLoggingInterceptor()
         logging.setLevel(HttpLoggingInterceptor.Level.BASIC)
         val mOkHttpClient = OkHttpClient.Builder()
@@ -31,6 +36,7 @@ class CubeRepositoryImpl(private var baseUrl: String): CubeRepository {
 
         cubeApi = retrofit.create(InfinityCubeApi::class.java)
     }
+
     override suspend fun getCubeState(): CubeState {
         return try {
             val response = cubeApi.getCubeState().awaitResponse()

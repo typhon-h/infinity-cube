@@ -3,6 +3,7 @@ package com.typhonh.infinitycube.controller
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.typhonh.infinitycube.model.CubeRepository
 import com.typhonh.infinitycube.model.CubeRepositoryImpl
 import com.typhonh.infinitycube.model.MdnsManager
 import com.typhonh.infinitycube.model.entity.CubeState
@@ -12,9 +13,8 @@ import kotlinx.coroutines.launch
 
 class InfinityCubeViewModel(): ViewModel() {
     private val mdnsManager = MdnsManager()
-    val mdnsAddress: String get() = mdnsManager.mdnsAddress
 
-    private var cubeRepository = CubeRepositoryImpl(mdnsManager.mdnsAddress)
+    private var cubeRepository: CubeRepository = CubeRepositoryImpl("localhost") // TODO: Make this do something reasonable
 
     private val _cubeState = MutableStateFlow(CubeState(false, 0))
     val cubeState: StateFlow<CubeState> get() = _cubeState
@@ -22,6 +22,8 @@ class InfinityCubeViewModel(): ViewModel() {
     fun init(context: Context) {
         viewModelScope.launch {
             mdnsManager.init(context)
+            cubeRepository.setUrl(mdnsManager.resolveAddress(mdnsManager.mdnsAddress))
+            getCubeState()
         }
     }
 
@@ -39,10 +41,14 @@ class InfinityCubeViewModel(): ViewModel() {
         }
     }
 
+    fun getAddress(): String {
+        return mdnsManager.mdnsAddress
+    }
+
     fun setAddress(context: Context, newAddress: String) {
         viewModelScope.launch {
             mdnsManager.updateAddress(context, newAddress)
-            //TODO: Probably needs to resolve the new mdns + update the repository
+            cubeRepository.setUrl(mdnsManager.resolveAddress(mdnsManager.mdnsAddress))
         }
     }
 }
