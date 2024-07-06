@@ -15,7 +15,7 @@ import javax.jmdns.JmDNS
 
 class MdnsManager {
     private val MDNS_KEY = "mdns_address"
-    private val DEFAULT_MDNS = "infcub.local"
+    val DEFAULT_MDNS = "infcub.local"
 
     private var _mdnsAddress: String by mutableStateOf(DEFAULT_MDNS)
     val mdnsAddress: String
@@ -49,7 +49,8 @@ class MdnsManager {
                     && serviceInfo.inetAddresses[0].hostAddress != null) {
                     serviceInfo.inetAddresses[0].hostAddress
                 } else {
-                    "localhost" //TODO: Make this do something reasonable
+                    // Default to mdns address since apparently this resolves on a softAP
+                    DEFAULT_MDNS
                 }
             }
         }

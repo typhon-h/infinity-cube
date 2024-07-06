@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class InfinityCubeViewModel(): ViewModel() {
     private val mdnsManager = MdnsManager()
 
-    private var cubeRepository: CubeRepository = CubeRepositoryImpl("localhost") // TODO: Make this do something reasonable
+    private var cubeRepository: CubeRepository = CubeRepositoryImpl(mdnsManager.DEFAULT_MDNS) // TODO: Make this do something reasonable
 
     private val _cubeState = MutableStateFlow(CubeState(false, 0))
     val cubeState: StateFlow<CubeState> get() = _cubeState
