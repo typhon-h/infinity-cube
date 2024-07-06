@@ -56,4 +56,11 @@ class InfinityCubeViewModel(): ViewModel() {
         }
     }
 
+    fun setPower(isOn: Boolean) {
+        viewModelScope.launch {
+            _cubeState.value = cubeRepository.setCubeState(
+                CubeState(isOn, _cubeState.value.intensity)
+            )
+        }
+    }
 }

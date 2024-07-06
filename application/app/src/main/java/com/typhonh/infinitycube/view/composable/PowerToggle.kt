@@ -20,9 +20,9 @@ import androidx.compose.ui.unit.dp
 import com.typhonh.infinitycube.R
 
 @Composable
-fun PowerToggle(isOn: Boolean) {
+fun PowerToggle(isOn: Boolean, onClick: () -> Unit) {
     IconButton(
-        onClick = {},
+        onClick = onClick,
         modifier = Modifier.size(200.dp)
             .border(Dp.Hairline, if (isOn) Color.Green else MaterialTheme.colorScheme.outline, CircleShape)
     ) {

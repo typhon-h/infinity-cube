@@ -44,6 +44,19 @@ class CubeRepositoryImpl(private var baseUrl: String): CubeRepository {
         }
     }
 
+    override suspend fun setCubeState(state: CubeState): CubeState {
+        return try {
+            val response = cubeApi.setCubeState(state).awaitResponse()
+            if (response.isSuccessful) {
+                response.body() ?: state
+            } else {
+                throw NoSuchElementException()
+            }
+        } catch (exception: Exception) {
+            state
+        }
+    }
+
     override suspend fun getEffectState(): EffectState {
         val defaultEffect = EffectState(
             name = EffectType.CHASE,

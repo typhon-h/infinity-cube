@@ -53,7 +53,9 @@ fun HomeFragment(
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
             Column(modifier = Modifier.weight(0.5f), verticalArrangement = Arrangement.Center) {
-                PowerToggle(cubeState.power)
+                PowerToggle(cubeState.power) {
+                    viewModel.setPower(!cubeState.power)
+                }
             }
             Column(modifier = Modifier.weight(0.5f), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceAround) {
                 Row(modifier = Modifier.fillMaxWidth(),
