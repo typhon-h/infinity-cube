@@ -71,7 +71,10 @@ fun HomeFragment(
                         showPresetSheet = true
                     }
                 }
-                IntensitySlider(cubeState.intensity)
+
+                IntensitySlider(cubeState.intensity, 3f..viewModel.INTENSITY_CAP) {
+                    viewModel.setIntensity(it)
+                }
             }
         }
 

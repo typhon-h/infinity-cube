@@ -41,12 +41,12 @@ class CubeRepositoryImpl(private var baseUrl: String): CubeRepository {
         return try {
             val response = cubeApi.getCubeState().awaitResponse()
             if (response.isSuccessful) {
-                response.body() ?: CubeState(false, 0)
+                response.body() ?: CubeState(false, 0f)
             } else {
                 throw NoSuchElementException()
             }
         } catch (exception: Exception) {
-            CubeState(false, 0)
+            CubeState(false, 0f)
         }
     }
 

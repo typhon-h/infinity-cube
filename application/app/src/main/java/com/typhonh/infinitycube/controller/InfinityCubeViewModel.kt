@@ -12,11 +12,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class InfinityCubeViewModel(): ViewModel() {
+    val INTENSITY_CAP = 254f // Not 255
+
     private val mdnsManager = MdnsManager()
 
-    private var cubeRepository: CubeRepository = CubeRepositoryImpl(mdnsManager.DEFAULT_MDNS) // TODO: Make this do something reasonable
+    private var cubeRepository: CubeRepository = CubeRepositoryImpl(mdnsManager.DEFAULT_MDNS)
 
-    private val _cubeState = MutableStateFlow(CubeState(false, 0))
+    private val _cubeState = MutableStateFlow(CubeState(false, 0f))
     val cubeState: StateFlow<CubeState> get() = _cubeState
 
     fun init(context: Context) {
@@ -24,6 +26,17 @@ class InfinityCubeViewModel(): ViewModel() {
             mdnsManager.init(context)
             cubeRepository.setUrl(mdnsManager.resolveAddress(mdnsManager.mdnsAddress))
             getCubeState()
+        }
+    }
+
+    fun getAddress(): String {
+        return mdnsManager.mdnsAddress
+    }
+
+    fun setAddress(context: Context, newAddress: String) {
+        viewModelScope.launch {
+            mdnsManager.updateAddress(context, newAddress)
+            cubeRepository.setUrl(mdnsManager.resolveAddress(mdnsManager.mdnsAddress))
         }
     }
 
@@ -41,14 +54,11 @@ class InfinityCubeViewModel(): ViewModel() {
         }
     }
 
-    fun getAddress(): String {
-        return mdnsManager.mdnsAddress
-    }
-
-    fun setAddress(context: Context, newAddress: String) {
+    fun setIntensity(newIntensity: Float) {
         viewModelScope.launch {
-            mdnsManager.updateAddress(context, newAddress)
-            cubeRepository.setUrl(mdnsManager.resolveAddress(mdnsManager.mdnsAddress))
+            _cubeState.value = cubeRepository.setCubeState(
+                CubeState(true, newIntensity)
+            )
         }
     }
 }
