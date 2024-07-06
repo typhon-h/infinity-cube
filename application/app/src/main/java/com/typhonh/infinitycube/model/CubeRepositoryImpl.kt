@@ -52,7 +52,7 @@ class CubeRepositoryImpl(private var baseUrl: String): CubeRepository {
 
     override suspend fun setCubeState(state: CubeState): CubeState {
         return try {
-            val response = cubeApi.setCubeState(state).awaitResponse()
+            val response = cubeApi.setCubeState(state.toMap()).awaitResponse()
             if (response.isSuccessful) {
                 response.body() ?: state
             } else {

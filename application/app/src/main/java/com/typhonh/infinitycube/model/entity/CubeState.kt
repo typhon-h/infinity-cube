@@ -8,4 +8,11 @@ data class CubeState(
 
     @SerializedName("intensity")
     val intensity: Int
-)
+) {
+    fun toMap(): Map<String, String> {
+        return mapOf(
+            "power" to if (power) "1" else "0",
+            "intensity" to intensity.toString()
+        )
+    }
+}
