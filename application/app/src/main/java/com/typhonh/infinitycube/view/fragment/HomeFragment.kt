@@ -40,7 +40,7 @@ fun HomeFragment(
     val cubeState by viewModel.cubeState.collectAsState()
 
     LaunchedEffect(key1 = null) {
-        viewModel.initDataStore(context)
+        viewModel.init(context)
         viewModel.getCubeState()
     }
 
