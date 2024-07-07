@@ -14,7 +14,7 @@ void activeEffect(AsyncWebServerRequest *request)
     body["name"] = effectName(currentEffect);
     body["speed"] = currentSpeed;
     body["symmetry"] = symmetryName(currentSymmetry);
-    body["direction"] = FFXBase::movementTypeStr(currentDirection);
+    body["direction"] = directionName(currentDirection);
     body["dot_width"] = dotWidth;
     body["dot_spacing"] = dotSpacing;
     body["dotBlur"] = dotBlur;

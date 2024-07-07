@@ -49,5 +49,6 @@ const int NUM_DIRECTIONS = 4; // not ideal but will do for now as enum is part o
 FFXBase *getEffect(uint16_t length);
 FFXBase::MovementType getInverseDirection(FFXBase::MovementType dir);
 std::string effectName(EFFECT_T effect);
+std::string directionName(FFXBase::MovementType dir);
 
 #endif // _EFFECT_H_
