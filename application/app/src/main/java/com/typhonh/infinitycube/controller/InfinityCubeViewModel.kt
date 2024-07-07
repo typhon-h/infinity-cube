@@ -30,7 +30,7 @@ class InfinityCubeViewModel(): ViewModel() {
         viewModelScope.launch {
             mdnsManager.init(context)
             cubeRepository.setUrl(mdnsManager.resolveAddress(mdnsManager.mdnsAddress))
-            getCubeState()
+            update()
         }
     }
 
@@ -63,10 +63,11 @@ class InfinityCubeViewModel(): ViewModel() {
         }
     }
 
-    fun getCubeState() {
+    fun update() {
         repositoryWrapper {
             _cubeState.value = cubeRepository.getCubeState()
         }
+        //TODO: Update effect params here
     }
 
     fun setPower(isOn: Boolean) {
