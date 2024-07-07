@@ -146,7 +146,7 @@ fun HomeFragment(
                 }
             }
 
-            ColorSettingsSheet(showColorSheet, onDismissRequest = { showColorSheet = false })
+            ColorSettingsSheet(showColorSheet, viewModel, onDismissRequest = { showColorSheet = false })
             EffectSettingsSheet(showEffectSheet, viewModel, onDismissRequest = { showEffectSheet = false })
             PresetSettingsSheet(showPresetSheet, onDismissRequest = { showPresetSheet = false })
         }

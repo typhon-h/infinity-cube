@@ -2,16 +2,21 @@ package com.typhonh.infinitycube.controller
 
 import android.content.Context
 import android.content.res.Resources.NotFoundException
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.typhonh.infinitycube.model.CubeRepository
 import com.typhonh.infinitycube.model.CubeRepositoryImpl
 import com.typhonh.infinitycube.model.MdnsManager
+import com.typhonh.infinitycube.model.entity.CRGB
 import com.typhonh.infinitycube.model.entity.CubeState
 import com.typhonh.infinitycube.model.entity.DirectionType
 import com.typhonh.infinitycube.model.entity.EffectState
 import com.typhonh.infinitycube.model.entity.EffectType
 import com.typhonh.infinitycube.model.entity.SymmetryType
+import io.mhssn.colorpicker.ext.blue
+import io.mhssn.colorpicker.ext.green
+import io.mhssn.colorpicker.ext.red
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -164,6 +169,17 @@ class InfinityCubeViewModel(): ViewModel() {
         repositoryWrapper {
             _effectState.value = cubeRepository.setEffectState(
                 _effectState.value.copy(speed = newSpeed)
+            )
+        }
+    }
+
+    fun setColor(index: Int, color: Color) {
+        val newColors = _effectState.value.color.toMutableList()
+        newColors[index] = CRGB(color.red(), color.green(), color.blue())
+
+        repositoryWrapper {
+            _effectState.value = cubeRepository.setEffectState(
+                _effectState.value.copy(color = newColors)
             )
         }
     }
