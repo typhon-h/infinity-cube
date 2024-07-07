@@ -100,6 +100,7 @@ fun ColorSettingsSheet(state: Boolean, viewModel: InfinityCubeViewModel, onDismi
                 if (selectedColor != -1) {
                     viewModel.setColor(selectedColor, it)
                 }
+                selectedColor = -1
             },
         )
     }
