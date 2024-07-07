@@ -57,7 +57,7 @@ fun MainScaffold(
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.BottomCenter){
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(text = "Infinity Cube", style = MaterialTheme.typography.displaySmall)
-                        Row(modifier = Modifier.clickable{ viewModel.update() }, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+                        Row(modifier = Modifier.clickable{ if (!isConnected && !isConnecting) viewModel.update() }, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(5.dp)) {
                             Text(text = if (isConnected)
                                 "Connected"
                             else if (isConnecting)
