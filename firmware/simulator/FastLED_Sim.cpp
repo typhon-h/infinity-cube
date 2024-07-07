@@ -151,11 +151,11 @@ void CFastLED::showColor(const struct CRGB &color, uint8_t scale)
         pCur->setDither(d);
         for (int i = 0; i < pCur->m_nLeds; i++)
         {
-            Serial.print((uint8_t)((pCur->m_Data)[i].r / 8));
+            Serial.print((uint8_t)((pCur->m_Data)[i].r));
             Serial.print(',');
-            Serial.print((uint8_t)((pCur->m_Data)[i].g / 8));
+            Serial.print((uint8_t)((pCur->m_Data)[i].g));
             Serial.print(',');
-            Serial.print((uint8_t)((pCur->m_Data)[i].b / 8));
+            Serial.print((uint8_t)((pCur->m_Data)[i].b));
             Serial.print(',');
         }
         pCur = pCur->next();
