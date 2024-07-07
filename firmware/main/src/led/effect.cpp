@@ -12,7 +12,11 @@
 
 EFFECT_T currentEffect = CHASE;
 FFXBase::MovementType currentDirection = FFXBase::MovementType::MVT_FORWARD;
-CRGBPalette16 currentPalette = NamedPalettes::getInstance()["multi"];
+CRGBPalette16 currentPalette = CRGBPalette16(
+    CRGB::Red, CRGB::Blue, CRGB::Red, CRGB::Blue,
+    CRGB::Black, CRGB::Black, CRGB::Black, CRGB::Black,
+    CRGB::Black, CRGB::Black, CRGB::Black, CRGB::Black,
+    CRGB::Black, CRGB::Black, CRGB::Black, CRGB::Black);
 SYMMETRY_T currentSymmetry = VERTEX;
 uint8_t currentSpeed = 220;
 
@@ -123,7 +127,7 @@ FFXBase::MovementType getInverseDirection(FFXBase::MovementType dir)
 
 /**
  * @brief Get the string name of an effect
- * 
+ *
  * @param effect effect to retrieve name of
  * @return std::string string name of the effect
  */
@@ -151,6 +155,31 @@ std::string effectName(EFFECT_T effect)
         return "twinkle";
     case SOLID:
         return "solid";
+    default:
+        return "unknown";
+    }
+}
+
+/**
+ * @brief Get the string name of a direction
+ *
+ * @param direction direction to retrieve name of
+ * @return std::string string name of the direction
+ */
+std::string directionName(FFXBase::MovementType dir)
+{
+    switch (dir)
+    {
+    case FFXBase::MovementType::MVT_FORWARD:
+        return "forward";
+    case FFXBase::MovementType::MVT_BACKWARD:
+        return "backward";
+    case FFXBase::MovementType::MVT_BACKFORTH:
+        return "backforth";
+    case FFXBase::MovementType::MVT_STILL:
+        return "still";
+    case FFXBase::MovementType::MVT_RANDOM:
+        return "random";
     default:
         return "unknown";
     }
