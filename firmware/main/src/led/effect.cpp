@@ -83,6 +83,7 @@ FFXBase *getEffect(uint16_t length)
         break;
     }
 
+    effect->getFXColor().setCRGB(ColorFromPalette(currentPalette, 0));
     effect->getFXColor().setPalette(currentPalette);
     effect->getFXColor().setStepDelta(5);
     effect->setSpeed(currentSpeed);
