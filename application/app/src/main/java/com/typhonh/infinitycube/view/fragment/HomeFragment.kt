@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.typhonh.infinitycube.R
 import com.typhonh.infinitycube.controller.InfinityCubeViewModel
@@ -71,8 +70,7 @@ fun HomeFragment(
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .fillMaxWidth(0.9f)
-                    .zIndex(if (isConnected) 1f else 0f),
+                    .fillMaxWidth(0.9f),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
