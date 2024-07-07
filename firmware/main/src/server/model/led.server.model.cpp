@@ -43,7 +43,8 @@ bool setDirection(String direction)
     uint8_t newDirection = direction.toInt();
     if (newDirection < NUM_DIRECTIONS)
     {
-        currentDirection = (FFXBase::MovementType)newDirection;
+        // MovementType is 1-indexed for the ordinal mappings
+        currentDirection = (FFXBase::MovementType)(newDirection + 1);
         return true;
     }
 
