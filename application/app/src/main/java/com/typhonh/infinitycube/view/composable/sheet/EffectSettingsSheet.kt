@@ -14,9 +14,12 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.typhonh.infinitycube.controller.InfinityCubeViewModel
 import com.typhonh.infinitycube.view.composable.DirectionSwitch
 import com.typhonh.infinitycube.view.composable.DotWidthSlider
 import com.typhonh.infinitycube.view.composable.EffectDropdown
@@ -24,8 +27,10 @@ import com.typhonh.infinitycube.view.composable.SpeedSlider
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EffectSettingsSheet(state: Boolean, onDismissRequest: () -> Unit = {}) {
+fun EffectSettingsSheet(state: Boolean, viewModel:InfinityCubeViewModel, onDismissRequest: () -> Unit = {}) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val effectState by viewModel.effectState.collectAsState()
+
     if(state) {
         ModalBottomSheet(
             onDismissRequest = onDismissRequest,
