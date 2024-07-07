@@ -8,6 +8,7 @@ import com.typhonh.infinitycube.model.CubeRepository
 import com.typhonh.infinitycube.model.CubeRepositoryImpl
 import com.typhonh.infinitycube.model.MdnsManager
 import com.typhonh.infinitycube.model.entity.CubeState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -25,6 +26,8 @@ class InfinityCubeViewModel(): ViewModel() {
 
     private val _isConnected = MutableStateFlow(false)
     val isConnected: StateFlow<Boolean> get() = _isConnected
+    private val _isConnecting = MutableStateFlow(true)
+    val isConnecting: StateFlow<Boolean> get() = _isConnecting
 
     fun init(context: Context) {
         viewModelScope.launch {
@@ -47,23 +50,34 @@ class InfinityCubeViewModel(): ViewModel() {
 
     private fun repositoryWrapper(func: suspend () -> Unit) {
         viewModelScope.launch {
-            try {
-                func()
-                _isConnected.value = true
-            } catch (e: Exception) {
-                when (e) {
-                    is NotFoundException,
-                    is UnknownHostException -> {
-                        _isConnected.value = false
+            val retryCounter = 5
+            var isSuccess = false
+            for(i in 0..retryCounter) {
+                try {
+                    func()
+                    isSuccess = true
+                    break
+                } catch (e: Exception) {
+                    isSuccess = false
+                    when (e) {
+                        is NotFoundException,
+                        is UnknownHostException -> {
+                            _isConnected.value = false
+                        }
+                        else -> throw e
                     }
-                    else -> throw e
                 }
-
+                delay(500)
             }
+
+            _isConnected.value = isSuccess
+            _isConnecting.value = false
         }
     }
 
     fun update() {
+        viewModelScope.launch { _isConnecting.value = true }
+
         repositoryWrapper {
             _cubeState.value = cubeRepository.getCubeState()
         }

@@ -1,6 +1,7 @@
 package com.typhonh.infinitycube.view
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,6 +41,7 @@ fun MainScaffold(
 ) {
     var showSettingsSheet by remember { mutableStateOf(false) }
     val isConnected by viewModel.isConnected.collectAsState()
+    val isConnecting by viewModel.isConnecting.collectAsState()
 
     Scaffold(
         content = { paddingValues ->
@@ -55,11 +57,21 @@ fun MainScaffold(
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.BottomCenter){
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(text = "Infinity Cube", style = MaterialTheme.typography.displaySmall)
-                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(5.dp)) {
-                            Text(text = if (isConnected) "Connected" else "Disconnected", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.outline)
+                        Row(modifier = Modifier.clickable{ viewModel.update() }, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+                            Text(text = if (isConnected)
+                                "Connected"
+                            else if (isConnecting)
+                                "Connecting"
+                            else "Disconnected",
+                                style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.outline)
                             Box(modifier = Modifier
                                 .background(
-                                    if (isConnected) Color.Green else Color.Red,
+                                    if (isConnected)
+                                        Color.Green
+                                    else if (isConnecting)
+                                        Color.Cyan
+                                    else
+                                        Color.Red,
                                     CircleShape
                                 )
                                 .size(10.dp))
