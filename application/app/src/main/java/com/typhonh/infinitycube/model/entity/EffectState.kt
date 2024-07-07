@@ -29,4 +29,24 @@ data class EffectState (
 
     @SerializedName("color")
     val color: List<CRGB>
-)
+) {
+
+
+
+
+    companion object {
+        val defaultEffect =
+            EffectState(
+                name = EffectType.CHASE,
+                speed = 220,
+                symmetry = SymmetryType.NONE,
+                direction = DirectionType.FORWARD,
+                dotWidth = 1,
+                dotSpacing = 1,
+                dotBlur = 1,
+                motionRange = 10,
+                color = listOf(CRGB(255,0,0),CRGB(0,0,255))
+            )
+    }
+
+}

@@ -8,6 +8,7 @@ import com.typhonh.infinitycube.model.CubeRepository
 import com.typhonh.infinitycube.model.CubeRepositoryImpl
 import com.typhonh.infinitycube.model.MdnsManager
 import com.typhonh.infinitycube.model.entity.CubeState
+import com.typhonh.infinitycube.model.entity.EffectState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,6 +24,9 @@ class InfinityCubeViewModel(): ViewModel() {
 
     private val _cubeState = MutableStateFlow(CubeState(false, 0f))
     val cubeState: StateFlow<CubeState> get() = _cubeState
+
+    private val _effectState = MutableStateFlow(EffectState.defaultEffect)
+    val effectState: StateFlow<EffectState> get() = _effectState
 
     private val _isConnected = MutableStateFlow(false)
     val isConnected: StateFlow<Boolean> get() = _isConnected
@@ -77,11 +81,8 @@ class InfinityCubeViewModel(): ViewModel() {
 
     fun update() {
         viewModelScope.launch { _isConnecting.value = true }
-
-        repositoryWrapper {
-            _cubeState.value = cubeRepository.getCubeState()
-        }
-        //TODO: Update effect params here
+        repositoryWrapper { _cubeState.value = cubeRepository.getCubeState() }
+        repositoryWrapper { _effectState.value = cubeRepository.getEffectState() }
     }
 
     fun setPower(isOn: Boolean) {
