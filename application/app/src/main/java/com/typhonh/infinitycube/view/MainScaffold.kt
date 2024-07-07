@@ -20,6 +20,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,10 +39,13 @@ fun MainScaffold(
     content: @Composable () -> Unit
 ) {
     var showSettingsSheet by remember { mutableStateOf(false) }
+    val isConnected by viewModel.isConnected.collectAsState()
 
     Scaffold(
         content = { paddingValues ->
-            Box(modifier = Modifier.padding(paddingValues).fillMaxSize(), contentAlignment = Alignment.Center) {
+            Box(modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize(), contentAlignment = Alignment.Center) {
                 content()
             }
             PreferencesSettingsSheet(showSettingsSheet, onDismissRequest = {showSettingsSheet = false}, viewModel = viewModel)
@@ -52,8 +56,13 @@ fun MainScaffold(
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(text = "Infinity Cube", style = MaterialTheme.typography.displaySmall)
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(5.dp)) {
-                            Text(text = "Connected", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.outline)
-                            Box(modifier = Modifier.background(Color.Green, CircleShape).size(10.dp))
+                            Text(text = if (isConnected) "Connected" else "Disconnected", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.outline)
+                            Box(modifier = Modifier
+                                .background(
+                                    if (isConnected) Color.Green else Color.Red,
+                                    CircleShape
+                                )
+                                .size(10.dp))
                         }
                     }
 

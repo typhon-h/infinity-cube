@@ -1,5 +1,6 @@
 package com.typhonh.infinitycube.model
 
+import android.content.res.Resources.NotFoundException
 import com.typhonh.infinitycube.model.entity.CRGB
 import com.typhonh.infinitycube.model.entity.CubeState
 import com.typhonh.infinitycube.model.entity.DirectionType
@@ -29,7 +30,7 @@ class CubeRepositoryImpl(private var baseUrl: String): CubeRepository {
             .build()
 
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("http://$baseUrl/") //TODO: Check updating mdns works
+            .baseUrl("http://$baseUrl/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(mOkHttpClient)
             .build()
@@ -38,28 +39,20 @@ class CubeRepositoryImpl(private var baseUrl: String): CubeRepository {
     }
 
     override suspend fun getCubeState(): CubeState {
-        return try {
-            val response = cubeApi.getCubeState().awaitResponse()
-            if (response.isSuccessful) {
-                response.body() ?: CubeState(false, 0f)
-            } else {
-                throw NoSuchElementException()
-            }
-        } catch (exception: Exception) {
-            CubeState(false, 0f)
+        val response = cubeApi.getCubeState().awaitResponse()
+        if (response.isSuccessful) {
+            return response.body() ?: CubeState(false, 0f)
+        } else {
+            throw NotFoundException()
         }
     }
 
     override suspend fun setCubeState(state: CubeState): CubeState {
-        return try {
-            val response = cubeApi.setCubeState(state.toMap()).awaitResponse()
-            if (response.isSuccessful) {
-                response.body() ?: state
-            } else {
-                throw NoSuchElementException()
-            }
-        } catch (exception: Exception) {
-            state
+        val response = cubeApi.setCubeState(state.toMap()).awaitResponse()
+        if (response.isSuccessful) {
+            return response.body() ?: state
+        } else {
+            throw NotFoundException()
         }
     }
 
@@ -76,15 +69,11 @@ class CubeRepositoryImpl(private var baseUrl: String): CubeRepository {
             color = listOf(CRGB(255,0,0),CRGB(0,0,255))
         )
 
-        return try {
-            val response = cubeApi.getEffectState().awaitResponse()
-            if (response.isSuccessful) {
-                response.body() ?: defaultEffect
-            } else {
-                throw NoSuchElementException()
-            }
-        } catch (exception: Exception) {
-            defaultEffect
+        val response = cubeApi.getEffectState().awaitResponse()
+        if (response.isSuccessful) {
+            return response.body() ?: defaultEffect
+        } else {
+            throw NotFoundException()
         }
     }
 }
