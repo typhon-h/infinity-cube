@@ -1,12 +1,14 @@
 package com.typhonh.infinitycube.model
 
 import android.content.res.Resources.NotFoundException
+import com.google.gson.GsonBuilder
 import com.typhonh.infinitycube.model.entity.CRGB
 import com.typhonh.infinitycube.model.entity.CubeState
 import com.typhonh.infinitycube.model.entity.DirectionType
 import com.typhonh.infinitycube.model.entity.EffectState
 import com.typhonh.infinitycube.model.entity.EffectType
 import com.typhonh.infinitycube.model.entity.SymmetryType
+import com.typhonh.infinitycube.model.serializer.EnumSerializer
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -29,9 +31,15 @@ class CubeRepositoryImpl(private var baseUrl: String): CubeRepository {
             .addInterceptor(logging)
             .build()
 
+        val gson = GsonBuilder()
+            .registerTypeAdapter(DirectionType::class.java, EnumSerializer())
+            .registerTypeAdapter(EffectType::class.java, EnumSerializer())
+            .registerTypeAdapter(SymmetryType::class.java, EnumSerializer())
+            .create()
+
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl("http://$baseUrl/")
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .client(mOkHttpClient)
             .build()
 

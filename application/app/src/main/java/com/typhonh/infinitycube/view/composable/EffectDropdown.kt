@@ -6,6 +6,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -18,11 +19,10 @@ import androidx.compose.ui.platform.LocalContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EffectDropdown() {
+fun <T> EffectDropdown(items: Array<T>, defaultSelected: T, onSelect: (T) -> Unit) where T : Enum<T> {
     val context = LocalContext.current
-    val items = arrayOf("Americano", "Cappuccino", "Espresso", "Latte", "Mocha")
     var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(items[0]) }
+    var selected by remember(defaultSelected) { mutableStateOf(defaultSelected) }
 
     Box() {
         ExposedDropdownMenuBox(
@@ -32,11 +32,11 @@ fun EffectDropdown() {
             }
         ) {
             TextField(
-                value = selectedText,
+                value = selected.name,
                 onValueChange = {},
                 readOnly = true,
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                modifier = Modifier.menuAnchor()
+                modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryEditable, true)
             )
 
             ExposedDropdownMenu(
@@ -45,11 +45,12 @@ fun EffectDropdown() {
             ) {
                 items.forEach { item ->
                     DropdownMenuItem(
-                        text = { Text(text = item) },
+                        text = { Text(text = item.name) },
                         onClick = {
-                            selectedText = item
+                            selected = item
                             expanded = false
-                            Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                            onSelect(item)
+                            Toast.makeText(context, item.name, Toast.LENGTH_SHORT).show()
                         }
                     )
                 }

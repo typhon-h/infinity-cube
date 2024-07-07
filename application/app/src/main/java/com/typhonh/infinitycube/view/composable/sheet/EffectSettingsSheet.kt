@@ -1,7 +1,6 @@
 package com.typhonh.infinitycube.view.composable.sheet
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -20,14 +19,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.typhonh.infinitycube.controller.InfinityCubeViewModel
-import com.typhonh.infinitycube.view.composable.DirectionSwitch
+import com.typhonh.infinitycube.model.entity.DirectionType
+import com.typhonh.infinitycube.model.entity.EffectType
+import com.typhonh.infinitycube.model.entity.SymmetryType
 import com.typhonh.infinitycube.view.composable.DotWidthSlider
 import com.typhonh.infinitycube.view.composable.EffectDropdown
 import com.typhonh.infinitycube.view.composable.SpeedSlider
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EffectSettingsSheet(state: Boolean, viewModel:InfinityCubeViewModel, onDismissRequest: () -> Unit = {}) {
+fun EffectSettingsSheet(state: Boolean, viewModel: InfinityCubeViewModel, onDismissRequest: () -> Unit = {}) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val effectState by viewModel.effectState.collectAsState()
 
@@ -45,22 +46,27 @@ fun EffectSettingsSheet(state: Boolean, viewModel:InfinityCubeViewModel, onDismi
 
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
                     Text("Direction")
-                    DirectionSwitch()
-                }
-
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-                   Text("Effect")
-                    EffectDropdown()
+                    EffectDropdown(DirectionType.values(), effectState.direction) {
+                        // TODO: set the direction
+                    }
                 }
 
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
                     Text("Symmetry")
-                    EffectDropdown()
+                    EffectDropdown(SymmetryType.values(), effectState.symmetry) {
+                        // TODO: set the symmetry
+                    }
                 }
 
-                HorizontalDivider()
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+                   Text("Effect")
+                    EffectDropdown(EffectType.values(), effectState.name) {
+                        // TODO: set the name
+                    }
+                }
 
-                if(true) { // TODO: If effect is chase
+                if(effectState.name == EffectType.CHASE) {
+                    HorizontalDivider()
                     Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
                         Text("Dot Width")
                         DotWidthSlider()
@@ -70,9 +76,8 @@ fun EffectSettingsSheet(state: Boolean, viewModel:InfinityCubeViewModel, onDismi
                         Text("Dot Spacing")
                         DotWidthSlider()
                     }
-                } else {
-                    Box(modifier = Modifier.fillMaxHeight(0.58f)) {}
                 }
+
                 HorizontalDivider()
 
                 Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
