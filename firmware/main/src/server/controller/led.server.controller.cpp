@@ -22,10 +22,13 @@ void activeEffect(AsyncWebServerRequest *request)
 
     JsonArray colorsArray = body.createNestedArray("color");
 
-    for (size_t i = 0; i < 16; i++)
+    int colors_to_send[4] = {0, 85, 170, 255};
+
+    for (size_t i = 0; i < 4; i++)
     {
         JsonObject color = colorsArray.createNestedObject();
-        CRGB fromPalette = ColorFromPalette(currentPalette, i);
+
+        CRGB fromPalette = ColorFromPalette(currentPalette, colors_to_send[i], 255, NOBLEND);
         color["r"] = fromPalette.r;
         color["g"] = fromPalette.g;
         color["b"] = fromPalette.b;
@@ -93,20 +96,13 @@ void setActiveEffect(AsyncWebServerRequest *request)
 
     if (isValid)
     {
-        bool colors[4] = {
+        bool has_colors[4] = {
             request->hasParam("color1"),
             request->hasParam("color2"),
             request->hasParam("color3"),
             request->hasParam("color4")};
 
-        for (int i = 0; i < 4; i++)
-        {
-            if (colors[i])
-            {
-                isValid = setPalette(request, colors);
-                break;
-            }
-        }
+        isValid = setPalette(request, has_colors);
     }
 
     if (isValid)

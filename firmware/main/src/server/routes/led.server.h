@@ -28,6 +28,6 @@ bool setDotWidth(String width);
 bool setDotSpacing(String spacing);
 bool setDotBlur(String blur);
 bool setMotionRange(String range);
-bool setPalette(AsyncWebServerRequest *request, bool colors[4]);
+bool setPalette(AsyncWebServerRequest *request, bool has_colors[4]);
 
 #endif // LED_SERVER_H_

@@ -12,11 +12,7 @@
 
 EFFECT_T currentEffect = CHASE;
 FFXBase::MovementType currentDirection = FFXBase::MovementType::MVT_FORWARD;
-CRGBPalette16 currentPalette = CRGBPalette16(
-    CRGB::Red, CRGB::Blue, CRGB::Red, CRGB::Blue,
-    CRGB::Black, CRGB::Black, CRGB::Black, CRGB::Black,
-    CRGB::Black, CRGB::Black, CRGB::Black, CRGB::Black,
-    CRGB::Black, CRGB::Black, CRGB::Black, CRGB::Black);
+CRGBPalette16 currentPalette = CRGBPalette16(CRGB::Red, CRGB::Blue, CRGB::Blue, CRGB::Red);
 SYMMETRY_T currentSymmetry = VERTEX;
 uint8_t currentSpeed = 220;
 
@@ -88,6 +84,7 @@ FFXBase *getEffect(uint16_t length)
     }
 
     effect->getFXColor().setPalette(currentPalette);
+    effect->getFXColor().setStepDelta(5);
     effect->setSpeed(currentSpeed);
     return effect;
 }

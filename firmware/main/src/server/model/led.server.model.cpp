@@ -99,24 +99,22 @@ bool setMotionRange(String motion)
     return false;
 }
 
-bool setPalette(AsyncWebServerRequest *request, bool colors[4])
+bool setPalette(AsyncWebServerRequest *request, bool has_colors[4])
 {
-    CRGB values[16];
-    int count = 0;
-    for (size_t i = 0; i < 4; i++)
+    CRGB gradient_colors[4] = {
+        CRGB::Black,
+        CRGB::Black,
+        CRGB::Black,
+        CRGB::Black};
+
+    for (int i = 0; i < 4; i++)
     {
-        if (colors[i])
+        if (has_colors[i])
         {
-            values[count] = string_to_crgb(request->arg("color" + String(i + 1)));
-            count++;
+            gradient_colors[i] = string_to_crgb(request->arg("color" + String(i + 1)));
         }
     }
 
-    for (size_t i = count; i < 16 - count; i++)
-    {
-        values[i] = CRGB::Black;
-    }
-
-    currentPalette = CRGBPalette16(values);
+    currentPalette = CRGBPalette16(gradient_colors[0], gradient_colors[1], gradient_colors[2], gradient_colors[3]);
     return true;
 }
