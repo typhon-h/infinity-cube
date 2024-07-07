@@ -20,7 +20,7 @@ CUBE_EDGES = 12
 MAX_LEVEL = 255
 
 try:  # Idenfity port and configure serial
-    PORT = "/dev/tty.usbserial-1220"#sys.argv[1]
+    PORT = sys.argv[1]
     arduino = serial.Serial(port=PORT, baudrate=115200,
                             timeout=0.1, dsrdtr=False, rtscts=False)
     SERIAL_MODE = True
