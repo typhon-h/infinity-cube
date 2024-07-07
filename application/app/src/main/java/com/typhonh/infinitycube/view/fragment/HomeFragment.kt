@@ -96,21 +96,27 @@ fun HomeFragment(
                             text = "Color",
                             description = "Change Color Palette"
                         ) {
-                            showColorSheet = true
+                            if(!showEffectSheet && !showPresetSheet) {
+                                showColorSheet = true
+                            }
                         }
                         ModalToggle(
                             icon = painterResource(id = R.drawable.lens_blur),
                             text = "Effect",
                             description = "Change Current Effect"
                         ) {
-                            showEffectSheet = true
+                            if(!showColorSheet && !showPresetSheet) {
+                                showEffectSheet = true
+                            }
                         }
                         ModalToggle(
                             icon = painterResource(id = R.drawable.storage),
                             text = "Preset",
                             description = "Save or Load Preset"
                         ) {
-                            showPresetSheet = true
+                            if(!showEffectSheet && !showColorSheet) {
+                                showPresetSheet = true
+                            }
                         }
                     }
 
@@ -146,7 +152,7 @@ fun HomeFragment(
                 }
             }
 
-            ColorSettingsSheet(showColorSheet, viewModel, onDismissRequest = { showColorSheet = false })
+            ColorSettingsSheet(showColorSheet && !showPresetSheet, viewModel, onDismissRequest = { showColorSheet = false })
             EffectSettingsSheet(showEffectSheet, viewModel, onDismissRequest = { showEffectSheet = false })
             PresetSettingsSheet(showPresetSheet, onDismissRequest = { showPresetSheet = false })
         }
