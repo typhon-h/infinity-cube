@@ -7,7 +7,7 @@ data class EffectState (
     val name: EffectType,
 
     @SerializedName("speed")
-    val speed: Int,
+    val speed: Float,
 
     @SerializedName("symmetry")
     val symmetry: SymmetryType,
@@ -16,16 +16,16 @@ data class EffectState (
     val direction: DirectionType,
 
     @SerializedName("dot_width")
-    val dotWidth: Int,
+    val dotWidth: Float,
 
     @SerializedName("dot_spacing")
-    val dotSpacing: Int,
+    val dotSpacing: Float,
 
     @SerializedName("dotBlur")
-    val dotBlur: Int,
+    val dotBlur: Float,
 
     @SerializedName("motion_range")
-    val motionRange: Int,
+    val motionRange: Float,
 
     @SerializedName("color")
     val color: List<CRGB>
@@ -38,13 +38,13 @@ data class EffectState (
         val defaultEffect =
             EffectState(
                 name = EffectType.CHASE,
-                speed = 220,
+                speed = 220f,
                 symmetry = SymmetryType.NONE,
                 direction = DirectionType.FORWARD,
-                dotWidth = 1,
-                dotSpacing = 1,
-                dotBlur = 1,
-                motionRange = 10,
+                dotWidth = 1f,
+                dotSpacing = 1f,
+                dotBlur = 1f,
+                motionRange = 10f,
                 color = listOf(CRGB(255,0,0),CRGB(0,0,255))
             )
     }

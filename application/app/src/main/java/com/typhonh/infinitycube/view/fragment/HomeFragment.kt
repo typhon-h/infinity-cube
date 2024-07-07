@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,7 +31,7 @@ import com.typhonh.infinitycube.controller.InfinityCubeViewModel
 import com.typhonh.infinitycube.view.MainScaffold
 import com.typhonh.infinitycube.view.composable.sheet.ColorSettingsSheet
 import com.typhonh.infinitycube.view.composable.sheet.EffectSettingsSheet
-import com.typhonh.infinitycube.view.composable.IntensitySlider
+import com.typhonh.infinitycube.view.composable.SettingsSlider
 import com.typhonh.infinitycube.view.composable.ModalToggle
 import com.typhonh.infinitycube.view.composable.PowerToggle
 import com.typhonh.infinitycube.view.composable.sheet.PresetSettingsSheet
@@ -112,7 +114,33 @@ fun HomeFragment(
                         }
                     }
 
-                    IntensitySlider(cubeState.intensity, 3f..viewModel.INTENSITY_CAP) {
+                    SettingsSlider(
+                        defaultValue = cubeState.intensity,
+                        valueRange = 3f..viewModel.INTENSITY_CAP,
+                        showPercentage = true,
+                        transparentSlider = true,
+                        minButton = { modifier ->
+                            IconButton(
+                                modifier = modifier,
+                                onClick = { viewModel.setIntensity(3f) })
+                            {
+                                Icon(painter = painterResource(R.drawable.brightness_1),
+                                    contentDescription = "Brightness Down",
+                                )
+                            }
+                        },
+                        maxButton = { modifier ->
+                            IconButton(
+                                modifier = modifier,
+                                onClick = { viewModel.setIntensity(viewModel.INTENSITY_CAP) })
+                            {
+                                Icon(
+                                    painter = painterResource(R.drawable.brightness_7),
+                                    contentDescription = "Brightness Up",
+                                )
+                            }
+                        }
+                        ) {
                         viewModel.setIntensity(it)
                     }
                 }
