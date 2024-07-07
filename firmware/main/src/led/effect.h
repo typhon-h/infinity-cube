@@ -44,7 +44,7 @@ const int MAX_DOT_WIDTH = 255;
 const int MAX_DOT_SPACING = 255;
 const int MAX_DOT_BLUR = 255;
 const int MAX_MOTION_RANGE = 255;
-const int NUM_DIRECTIONS = 4; // not ideal but will do for now as enum is part of FFX
+const int NUM_DIRECTIONS = 5; // not ideal but will do for now as enum is part of FFX
 
 FFXBase *getEffect(uint16_t length);
 FFXBase::MovementType getInverseDirection(FFXBase::MovementType dir);
