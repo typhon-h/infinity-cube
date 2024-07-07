@@ -1,6 +1,8 @@
 package com.typhonh.infinitycube.model.entity
 
 import com.google.gson.annotations.SerializedName
+import okhttp3.internal.toHexString
+import kotlin.math.roundToInt
 
 data class EffectState (
     @SerializedName("name")
@@ -31,6 +33,32 @@ data class EffectState (
     val color: List<CRGB>
 ) {
 
+    fun toMap(): Map<String, String> {
+        return mapOf(
+            "name" to name.ordinal.toString(),
+            "speed" to speed.roundToInt().toString(),
+            "symmetry" to symmetry.ordinal.toString(),
+            "direction" to direction.ordinal.toString(),
+            "dotWidth" to dotWidth.roundToInt().toString(),
+            "dotSpacing" to dotSpacing.roundToInt().toString(),
+            "dotBlur" to dotBlur.roundToInt().toString(),
+            "motionRange" to motionRange.roundToInt().toString(),
+        ) +
+        color.withIndex()
+            .filter { it.index % 5 == 0}
+            .associate {
+                (index, value) -> "color${index/5 + 1}" to "${intToHexString(value.r)}${intToHexString(value.g)}${intToHexString(value.b)}" }
+    }
+
+    private fun intToHexString(n: Int) : String {
+        val hex = n.toHexString()
+
+        return if (hex.length < 2) {
+            "0$hex"
+        } else {
+            hex.reversed().substring(0, 2)
+        }
+    }
 
 
 

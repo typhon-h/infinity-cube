@@ -16,4 +16,7 @@ interface InfinityCubeApi {
 
     @GET("led/effect")
     fun getEffectState(): Call<EffectState>
+
+    @PUT("led/effect")
+    fun setEffectState(@QueryMap options: Map<String, String>): Call<EffectState>
 }

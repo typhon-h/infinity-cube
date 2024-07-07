@@ -25,5 +25,4 @@ class EnumSerializer<T : Enum<T>> : JsonDeserializer<T> {
             null
         }
     }
-
 }

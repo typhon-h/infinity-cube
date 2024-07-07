@@ -72,4 +72,13 @@ class CubeRepositoryImpl(private var baseUrl: String): CubeRepository {
             throw NotFoundException()
         }
     }
+
+    override suspend fun setEffectState(state: EffectState): EffectState {
+        val response = cubeApi.setEffectState(state.toMap()).awaitResponse()
+        if (response.isSuccessful) {
+            return response.body() ?: state
+        } else {
+            throw NotFoundException()
+        }
+    }
 }
