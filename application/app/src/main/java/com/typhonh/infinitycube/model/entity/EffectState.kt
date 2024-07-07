@@ -45,9 +45,8 @@ data class EffectState (
             "motionRange" to motionRange.roundToInt().toString(),
         ) +
         color.withIndex()
-            .filter { it.index % 5 == 0}
             .associate {
-                (index, value) -> "color${index/5 + 1}" to "${intToHexString(value.r)}${intToHexString(value.g)}${intToHexString(value.b)}" }
+                (index, value) -> "color${index + 1}" to "${intToHexString(value.r)}${intToHexString(value.g)}${intToHexString(value.b)}" }
     }
 
     private fun intToHexString(n: Int) : String {
@@ -73,7 +72,8 @@ data class EffectState (
                 dotSpacing = 1f,
                 dotBlur = 1f,
                 motionRange = 10f,
-                color = listOf(CRGB(255,0,0),CRGB(0,0,255))
+                color = listOf(
+                    CRGB(255,0,0), CRGB(0,0,255), CRGB(0,0,255), CRGB(255,0,0))
             )
     }
 
