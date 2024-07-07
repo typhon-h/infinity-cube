@@ -90,8 +90,8 @@ fun EffectSettingsSheet(state: Boolean, viewModel: InfinityCubeViewModel, onDism
                         Text("Dot Width")
                         SettingsSlider(
                             defaultValue = effectState.dotWidth,
-                            valueRange = 1f..15f,
-                            steps = 14,
+                            valueRange = 1f..5f,
+                            steps = 5,
                             showValue = true
                         ) {
                             // TODO: set the dot width
@@ -106,7 +106,7 @@ fun EffectSettingsSheet(state: Boolean, viewModel: InfinityCubeViewModel, onDism
                         Text("Dot Spacing")
                         SettingsSlider(
                             defaultValue = effectState.dotSpacing,
-                            valueRange = 1f..15f,
+                            valueRange = 1f..10f,
                             steps = 14,
                             showValue = true
                         ) {
