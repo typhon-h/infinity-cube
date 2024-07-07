@@ -161,7 +161,7 @@ fun EffectSettingsSheet(state: Boolean, viewModel: InfinityCubeViewModel, onDism
                         minButton = { modifier ->
                             IconButton(
                                 modifier = modifier,
-                                onClick = { }
+                                onClick = { viewModel.setSpeed(0f) }
                             ) {
                                 Icon(painter = painterResource(R.drawable.bolt_hollow),
                                     contentDescription = "Speed Down",
@@ -171,7 +171,7 @@ fun EffectSettingsSheet(state: Boolean, viewModel: InfinityCubeViewModel, onDism
                         maxButton = { modifier ->
                             IconButton(
                                 modifier = modifier,
-                                onClick = { }
+                                onClick = { viewModel.setSpeed(255f) }
                             ) {
                                 Icon(painter = painterResource(R.drawable.bolt_fill),
                                     contentDescription = "Speed Up",
