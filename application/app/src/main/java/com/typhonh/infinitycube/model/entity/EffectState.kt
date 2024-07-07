@@ -59,8 +59,6 @@ data class EffectState (
         }
     }
 
-
-
     companion object {
         val defaultEffect =
             EffectState(

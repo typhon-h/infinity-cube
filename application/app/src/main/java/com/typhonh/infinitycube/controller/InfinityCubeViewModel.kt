@@ -8,7 +8,10 @@ import com.typhonh.infinitycube.model.CubeRepository
 import com.typhonh.infinitycube.model.CubeRepositoryImpl
 import com.typhonh.infinitycube.model.MdnsManager
 import com.typhonh.infinitycube.model.entity.CubeState
+import com.typhonh.infinitycube.model.entity.DirectionType
 import com.typhonh.infinitycube.model.entity.EffectState
+import com.typhonh.infinitycube.model.entity.EffectType
+import com.typhonh.infinitycube.model.entity.SymmetryType
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -100,4 +103,70 @@ class InfinityCubeViewModel(): ViewModel() {
             )
         }
     }
+
+    fun setEffect(newEffect: EffectType) {
+        repositoryWrapper {
+            _effectState.value = cubeRepository.setEffectState(
+                _effectState.value.copy(name = newEffect)
+            )
+        }
+    }
+
+    fun setDirection(newDirection: DirectionType) {
+        repositoryWrapper {
+            _effectState.value = cubeRepository.setEffectState(
+                _effectState.value.copy(direction = newDirection)
+            )
+        }
+    }
+
+    fun setSymmetry(newSymmetry: SymmetryType) {
+        repositoryWrapper {
+            _effectState.value = cubeRepository.setEffectState(
+                _effectState.value.copy(symmetry = newSymmetry)
+            )
+        }
+    }
+
+    fun setDotWidth(newDotWidth: Float) {
+        repositoryWrapper {
+            _effectState.value = cubeRepository.setEffectState(
+                _effectState.value.copy(dotWidth = newDotWidth)
+            )
+        }
+    }
+
+    fun setDotSpacing(newDotSpacing: Float) {
+        repositoryWrapper {
+            _effectState.value = cubeRepository.setEffectState(
+                _effectState.value.copy(dotSpacing = newDotSpacing)
+            )
+        }
+    }
+
+    fun setDotBlur(newDotBlur: Float) {
+        repositoryWrapper {
+            _effectState.value = cubeRepository.setEffectState(
+                _effectState.value.copy(dotBlur = newDotBlur)
+            )
+        }
+    }
+
+    fun setMotionRange(newMotionRange: Float) {
+        repositoryWrapper {
+            _effectState.value = cubeRepository.setEffectState(
+                _effectState.value.copy(motionRange = newMotionRange)
+            )
+        }
+    }
+
+    fun setSpeed(newSpeed: Float) {
+        repositoryWrapper {
+            _effectState.value = cubeRepository.setEffectState(
+                _effectState.value.copy(speed = newSpeed)
+            )
+        }
+    }
+
+
 }

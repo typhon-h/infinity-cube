@@ -54,7 +54,7 @@ fun EffectSettingsSheet(state: Boolean, viewModel: InfinityCubeViewModel, onDism
                 ) {
                     Text("Direction")
                     EffectDropdown(DirectionType.values(), effectState.direction) {
-                        // TODO: set the direction
+                        viewModel.setDirection(it)
                     }
                 }
 
@@ -65,7 +65,7 @@ fun EffectSettingsSheet(state: Boolean, viewModel: InfinityCubeViewModel, onDism
                 ) {
                     Text("Symmetry")
                     EffectDropdown(SymmetryType.values(), effectState.symmetry) {
-                        // TODO: set the symmetry
+                        viewModel.setSymmetry(it)
                     }
                 }
 
@@ -76,7 +76,7 @@ fun EffectSettingsSheet(state: Boolean, viewModel: InfinityCubeViewModel, onDism
                 ) {
                     Text("Effect")
                     EffectDropdown(EffectType.values(), effectState.name) {
-                        // TODO: set the name
+                        viewModel.setEffect(it)
                     }
                 }
 
@@ -94,7 +94,7 @@ fun EffectSettingsSheet(state: Boolean, viewModel: InfinityCubeViewModel, onDism
                             steps = 5,
                             showValue = true
                         ) {
-                            // TODO: set the dot width
+                            viewModel.setDotWidth(it)
                         }
                     }
                     HorizontalDivider()
@@ -110,7 +110,7 @@ fun EffectSettingsSheet(state: Boolean, viewModel: InfinityCubeViewModel, onDism
                             steps = 14,
                             showValue = true
                         ) {
-                            // TODO: set the dot spacing
+                            viewModel.setDotSpacing(it)
                         }
                     }
                     HorizontalDivider()
@@ -125,7 +125,7 @@ fun EffectSettingsSheet(state: Boolean, viewModel: InfinityCubeViewModel, onDism
                             valueRange = 0f..255f,
                             showValue = true
                         ) {
-                            // TODO: set the dot blur
+                            viewModel.setDotBlur(it)
                         }
                     }
                 } else if (effectState.name == EffectType.MOTION) {
@@ -141,7 +141,7 @@ fun EffectSettingsSheet(state: Boolean, viewModel: InfinityCubeViewModel, onDism
                             valueRange = 0f..255f,
                             showValue = true
                         ) {
-                            // TODO: set the dot blur
+                            viewModel.setMotionRange(it)
                         }
                     }
                 }
@@ -179,7 +179,7 @@ fun EffectSettingsSheet(state: Boolean, viewModel: InfinityCubeViewModel, onDism
                             }
                         }
                     ) {
-                        // TODO: set the speed
+                        viewModel.setSpeed(it)
                     }
                 }
             }
