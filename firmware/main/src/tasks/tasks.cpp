@@ -4,8 +4,16 @@
 
 // Set of task definition for the RTOS scheduler to execute
 TASK_T system_tasks[] = {
-    {"LED Update", &ledUpdateCallback, LED_UPDATE_TASK_FREQUENCY, LED_PRIORITY, CORE1},
-    {"Alexa", &alexa_callback, ALEXA_POLL_TASK_FREQUENCY, SERVER_PRIORITY, CORE1},
+    {.name = "LED Update",
+     .callback = &ledUpdateCallback,
+     .frequency = LED_UPDATE_TASK_FREQUENCY,
+     .priority = LED_PRIORITY,
+     .core = CORE1},
+    {.name = "Alexa",
+     .callback = &alexa_callback,
+     .frequency = ALEXA_POLL_TASK_FREQUENCY,
+     .priority = SERVER_PRIORITY,
+     .core = CORE1},
 };
 
 /**
@@ -20,7 +28,7 @@ void scheduler_setup()
     xTaskCreatePinnedToCore(
         taskCallback,               // Callback function
         system_tasks[i].name,       // Task name
-        DEFAULT_STACK_SIZE,         // Stack size
+        system_tasks[i].stack_size, // Stack size
         (void *)(system_tasks + i), // Callback parameter (TASK_T object)
         system_tasks[i].priority,   // Execution priority
         NULL,                       // Handler

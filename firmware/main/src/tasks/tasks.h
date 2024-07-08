@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <stdint.h>
 
-#define DEFAULT_STACK_SIZE 10000 // TODO: Revisit this might need to define this per task
+#define DEFAULT_STACK_SIZE 5000
 #define CORE0 0
 #define CORE1 1
 
@@ -28,6 +28,7 @@ typedef struct
   float frequency;
   TASK_PRIORITY_T priority;
   BaseType_t core;
+  int stack_size = DEFAULT_STACK_SIZE;
 } TASK_T;
 
 void ledUpdateCallback(void);
