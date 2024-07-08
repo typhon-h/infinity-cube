@@ -2,6 +2,7 @@ package com.typhonh.infinitycube.controller
 
 import android.content.Context
 import android.content.res.Resources.NotFoundException
+import android.widget.Toast
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -190,6 +191,12 @@ class InfinityCubeViewModel() : ViewModel() {
             _effectState.value = cubeRepository.setEffectState(
                 _effectState.value.copy(color = newColors)
             )
+        }
+    }
+
+    fun setWifi(ssid: String, password: String, context: Context) {
+        repositoryWrapper {
+            Toast.makeText(context, cubeRepository.setWifi(ssid, password), Toast.LENGTH_SHORT).show()
         }
     }
 

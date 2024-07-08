@@ -14,6 +14,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.awaitResponse
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 
 
 class CubeRepositoryImpl(private var baseUrl: String): CubeRepository {
@@ -39,6 +40,7 @@ class CubeRepositoryImpl(private var baseUrl: String): CubeRepository {
 
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl("http://$baseUrl/")
+            .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(mOkHttpClient)
             .build()
@@ -77,6 +79,15 @@ class CubeRepositoryImpl(private var baseUrl: String): CubeRepository {
         val response = cubeApi.setEffectState(state.toMap()).awaitResponse()
         if (response.isSuccessful) {
             return response.body() ?: state
+        } else {
+            throw NotFoundException()
+        }
+    }
+
+    override suspend fun setWifi(ssid: String, password: String): String {
+        val response = cubeApi.setWifi(ssid, password).awaitResponse()
+        if (response.isSuccessful) {
+            return response.body() ?: "Success"
         } else {
             throw NotFoundException()
         }
