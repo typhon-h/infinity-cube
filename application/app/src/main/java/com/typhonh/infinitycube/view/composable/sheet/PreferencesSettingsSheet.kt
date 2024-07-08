@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -38,6 +40,33 @@ fun PreferencesSettingsSheet(state: Boolean, viewModel: InfinityCubeViewModel, o
     val context = LocalContext.current
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var showConfirmReset by remember { mutableStateOf(false) }
+    if (showConfirmReset) {
+        AlertDialog(
+            onDismissRequest = { showConfirmReset = false},
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showConfirmReset = false
+                        viewModel.factoryReset(context)
+                              },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)
+                ) {
+                    Text("Reset")
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = { showConfirmReset = false},
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary, contentColor = MaterialTheme.colorScheme.onSecondary)
+                ) {
+                    Text("Cancel")
+                }
+            },
+            title = { Text("Confirm Factory Reset") }
+        )
+    }
+
     if (state) {
         ModalBottomSheet(
             onDismissRequest = {
@@ -125,10 +154,9 @@ fun PreferencesSettingsSheet(state: Boolean, viewModel: InfinityCubeViewModel, o
                     Text("Clear Presets")
                 }
 
-                Button(onClick = {}) {
+                Button(onClick = { showConfirmReset = true }) {
                     Text("Factory Reset Device")
                 }
-
             }
         }
     }

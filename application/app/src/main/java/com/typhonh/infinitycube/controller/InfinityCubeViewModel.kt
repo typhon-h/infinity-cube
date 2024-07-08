@@ -25,6 +25,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import java.net.ConnectException
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 class InfinityCubeViewModel() : ViewModel() {
@@ -82,6 +83,7 @@ class InfinityCubeViewModel() : ViewModel() {
                         when (e) {
                             is NotFoundException,
                             is ConnectException,
+                            is SocketTimeoutException,
                             is UnknownHostException -> {
                                 _isConnected.value = false
                             }
@@ -197,6 +199,12 @@ class InfinityCubeViewModel() : ViewModel() {
     fun setWifi(ssid: String, password: String, context: Context) {
         repositoryWrapper {
             Toast.makeText(context, cubeRepository.setWifi(ssid, password), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun factoryReset(context: Context) {
+        repositoryWrapper {
+            Toast.makeText(context, cubeRepository.factoryReset(), Toast.LENGTH_SHORT).show()
         }
     }
 

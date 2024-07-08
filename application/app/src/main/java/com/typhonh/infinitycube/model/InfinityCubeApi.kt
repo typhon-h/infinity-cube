@@ -24,4 +24,7 @@ interface InfinityCubeApi {
 
     @POST("connect")
     fun setWifi(@Query("SSID") ssid: String, @Query("PASSWORD") password: String): Call<String>
+
+    @GET("backdoor/reset")
+    fun factoryReset(): Call<String>
 }

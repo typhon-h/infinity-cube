@@ -11,6 +11,7 @@ interface CubeRepository {
     suspend fun setEffectState(state: EffectState): EffectState
 
     suspend fun setWifi(ssid: String, password: String): String
+    suspend fun factoryReset(): String
 
     fun setUrl(baseUrl: String)
 }

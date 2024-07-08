@@ -92,4 +92,13 @@ class CubeRepositoryImpl(private var baseUrl: String): CubeRepository {
             throw NotFoundException()
         }
     }
+
+    override suspend fun factoryReset(): String {
+        val response = cubeApi.factoryReset().awaitResponse()
+        if (response.isSuccessful) {
+            return response.body() ?: "Success"
+        } else {
+            throw NotFoundException()
+        }
+    }
 }
