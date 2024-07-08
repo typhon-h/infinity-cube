@@ -21,9 +21,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import java.net.ConnectException
 import java.net.UnknownHostException
 
-class InfinityCubeViewModel(): ViewModel() {
+class InfinityCubeViewModel() : ViewModel() {
     val INTENSITY_CAP = 254f // Not 255
 
     private val mdnsManager = MdnsManager()
@@ -40,6 +43,8 @@ class InfinityCubeViewModel(): ViewModel() {
     val isConnected: StateFlow<Boolean> get() = _isConnected
     private val _isConnecting = MutableStateFlow(true)
     val isConnecting: StateFlow<Boolean> get() = _isConnecting
+
+    private val lock = Mutex()
 
     fun init(context: Context) {
         viewModelScope.launch {
@@ -62,28 +67,32 @@ class InfinityCubeViewModel(): ViewModel() {
 
     private fun repositoryWrapper(func: suspend () -> Unit) {
         viewModelScope.launch {
-            val retryCounter = 5
-            var isSuccess = false
-            for(i in 0..retryCounter) {
-                try {
-                    func()
-                    isSuccess = true
-                    break
-                } catch (e: Exception) {
-                    isSuccess = false
-                    when (e) {
-                        is NotFoundException,
-                        is UnknownHostException -> {
-                            _isConnected.value = false
-                        }
-                        else -> throw e
-                    }
-                }
-                delay(500)
-            }
+            lock.withLock {
+                val retryCounter = 5
+                var isSuccess = false
+                for (i in 0..retryCounter) {
 
-            _isConnected.value = isSuccess
-            _isConnecting.value = false
+                    try {
+                        func()
+                        isSuccess = true
+                        break
+                    } catch (e: Exception) {
+                        isSuccess = false
+                        when (e) {
+                            is NotFoundException,
+                            is ConnectException,
+                            is UnknownHostException -> {
+                                _isConnected.value = false
+                            }
+
+                            else -> throw e
+                        }
+                    }
+                    delay(500)
+                }
+                _isConnected.value = isSuccess
+                _isConnecting.value = false
+            }
         }
     }
 
