@@ -9,11 +9,14 @@
  */
 void resetBoard(AsyncWebServerRequest *request)
 {
-    if(clearPreferences()) {
-        request->send(STATUS_OK, "text/plain", "Preferences Cleared.");
+    if (clearPreferences())
+    {
+        request->send(STATUS_OK, "text/plain", "Completed Factory Reset. Restarting...");
         delay(1000); // Buffer to allow response to send
         ESP.restart();
-    } else {
-        request->send(STATUS_INTERNAL_SERVER_ERROR, "text/plain", "Could not clear preferences.");
+    }
+    else
+    {
+        request->send(STATUS_INTERNAL_SERVER_ERROR, "text/plain", "Could Not Complete Reset");
     }
 }
