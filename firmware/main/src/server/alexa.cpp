@@ -18,7 +18,7 @@ void device_handler(EspalexaDevice *device)
     if (device == nullptr)
         return;
 
-    currentIntensity = device->getValue();
+    currentIntensity = device->getLastValue();
     led_state = device->getState();
 
     // only update if the color has been changed to prevent custom palettes being overwritten by state/intensity changes
