@@ -31,8 +31,8 @@ void authorizeWifi(AsyncWebServerRequest *request)
  */
 void notFound(AsyncWebServerRequest *request)
 {
-    String body = (request->hasParam("body", true)) ? request->getParam("body", true)->value() : String();
-    if (fauxmo.process(request->client(), request->method() == HTTP_GET, request->url(), body))
-        return;
-    request->send(STATUS_NOT_FOUND, "text/plain", "Doctor, are you there?");
+    if (!espalexa.handleAlexaApiCall(request)) // Check if request was Alexa and handle if yes
+    {
+        request->send(STATUS_NOT_FOUND, "text/plain", "Doctor, are you there?");
+    }
 }

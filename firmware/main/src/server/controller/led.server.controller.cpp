@@ -107,11 +107,6 @@ void setActiveEffect(AsyncWebServerRequest *request)
 
     if (isValid)
     {
-        if (currentPalette != oldPalette) // TODO: make mono endpoint colors update alexa?
-        {                                 // color palette was updated via endpoint
-            CRGB color = ColorFromPalette(currentPalette, 0);
-            fauxmo.setState(static_cast<unsigned char>(0), led_state, 0, 1); // 1 saturation means custom palette
-        }
         sync_alexa();
         // Respond with the updated effect via the getter
         activeEffect(request);

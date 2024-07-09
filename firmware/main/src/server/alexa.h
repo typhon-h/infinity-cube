@@ -2,11 +2,15 @@
 #define _ALEXA_H_
 
 #include <Arduino.h>
-#include "fauxmoESP.h"
+#define ESPALEXA_ASYNC
+#define ESPALEXA_NO_SUBPAGE
+#define ESPALEXA_MAXDEVICES 1
+#include <Espalexa.h>
 
 #include "server.h"
 
-extern fauxmoESP fauxmo;
+extern Espalexa espalexa;
+extern EspalexaDevice *alexa_device;
 
 void alexa_callback(void);
 void alexa_setup(void);

@@ -15,9 +15,4 @@ void base_routes(AsyncWebServer *server)
 
     // Set Wifi credentials
     server->on((String(BASE_ROUTE) + "/connect").c_str(), HTTP_POST, authorizeWifi);
-
-    server->onRequestBody([](AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total)
-                          {
-        if (fauxmo.process(request->client(), request->method() == HTTP_GET, request->url(), String((char *)data)))
-            return; });
 }

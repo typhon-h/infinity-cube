@@ -5,42 +5,47 @@
 #include "../led/effect.h"
 #include "../../userpreferences.h"
 
-fauxmoESP fauxmo;
+Espalexa espalexa;
+EspalexaDevice *alexa_device;
 
 void alexa_callback()
 {
-    fauxmo.handle();
+    espalexa.loop();
 }
 
-void device_handler(unsigned char device_id, const char *device_name, bool state, unsigned char value, unsigned int hue, unsigned int saturation, unsigned int ct)
+void device_handler(EspalexaDevice *device)
 {
-    currentIntensity = value;
-    // TODO: currently have to go custom -> other(alexa) -> white instead of custom -> white???
-    if (saturation != 1) // use 1 as custom color sat - unlikely to occur in actual color
-    {
-        currentPalette = CRGBPalette16(CRGB(fauxmo.getRed(device_id), fauxmo.getGreen(device_id), fauxmo.getBlue(device_id)));
-    }
+    if (device == nullptr)
+        return;
 
-    led_state = state;
+    currentIntensity = device->getValue();
+    led_state = device->getState();
+
+    // only update if the color has been changed to prevent custom palettes being overwritten by state/intensity changes
+    CRGB color = ColorFromPalette(currentPalette, 0);
+    if (device->getR() != color.r || device->getG() != color.g || device->getB() != color.b)
+        currentPalette = CRGBPalette16(CRGB(device->getR(), device->getG(), device->getB()));
 
     sync_led();
 }
 
 void sync_alexa()
 {
-    fauxmo.setState(static_cast<unsigned char>(0), static_cast<bool>(led_state), static_cast<unsigned char>(currentIntensity));
+    alexa_device->setState(led_state);
+    alexa_device->setValue(currentIntensity);
+
+    CRGB color = ColorFromPalette(currentPalette, 0);
+    alexa_device->setColor(color.r, color.g, color.b);
 
     sync_led();
 }
 
 void alexa_setup()
 {
-    fauxmo.createServer(false);
-    fauxmo.setPort(PORT); // This is required for gen3 devices
-    fauxmo.enable(true);
-    fauxmo.addDevice(DEVICE_NAME);
+    alexa_device = new EspalexaDevice(DEVICE_NAME, device_handler, EspalexaDeviceType::color);
 
-    fauxmo.onSetState(device_handler);
+    espalexa.addDevice(alexa_device);
+    espalexa.begin(&server);
 
     sync_alexa();
 }
