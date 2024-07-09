@@ -95,6 +95,7 @@ fun HomeFragment(
                             description = "Change Color Palette"
                         ) {
                             if(!showEffectSheet && !showPresetSheet) {
+                                viewModel.update() // So that color is always synced with cube when opened
                                 showColorSheet = true
                             }
                         }
