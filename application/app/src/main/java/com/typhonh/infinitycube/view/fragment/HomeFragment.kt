@@ -105,6 +105,7 @@ fun HomeFragment(
                             description = "Change Current Effect"
                         ) {
                             if(!showColorSheet && !showPresetSheet) {
+                                viewModel.update()
                                 showEffectSheet = true
                             }
                         }
