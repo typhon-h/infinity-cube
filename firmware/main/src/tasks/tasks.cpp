@@ -4,16 +4,20 @@
 
 // Set of task definition for the RTOS scheduler to execute
 TASK_T system_tasks[] = {
-    {.name = "LED Update",
-     .callback = &ledUpdateCallback,
-     .frequency = LED_UPDATE_TASK_FREQUENCY,
-     .priority = LED_PRIORITY,
-     .core = CORE1},
-    {.name = "Alexa",
-     .callback = &alexa_callback,
-     .frequency = ALEXA_POLL_TASK_FREQUENCY,
-     .priority = SERVER_PRIORITY,
-     .core = CORE1},
+    {
+        .name = "LED Update",
+        .callback = &ledUpdateCallback,
+        .frequency = LED_UPDATE_TASK_FREQUENCY,
+        .priority = LED_PRIORITY,
+        .core = CORE1,
+    },
+    {
+        .name = "Alexa",
+        .callback = &alexa_callback,
+        .frequency = ALEXA_POLL_TASK_FREQUENCY,
+        .priority = SERVER_PRIORITY,
+        .core = CORE1,
+    },
 };
 
 /**
