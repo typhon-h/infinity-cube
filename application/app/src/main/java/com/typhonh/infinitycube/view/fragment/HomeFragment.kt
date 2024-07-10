@@ -109,15 +109,15 @@ fun HomeFragment(
                                 showEffectSheet = true
                             }
                         }
-//                        ModalToggle(
-//                            icon = painterResource(id = R.drawable.storage),
-//                            text = "Preset",
-//                            description = "Save or Load Preset"
-//                        ) {
-//                            if(!showEffectSheet && !showColorSheet) {
-//                                showPresetSheet = true
-//                            }
-//                        }
+                        ModalToggle(
+                            icon = painterResource(id = R.drawable.storage),
+                            text = "Preset",
+                            description = "Save or Load Preset"
+                        ) {
+                            if(!showEffectSheet && !showColorSheet) {
+                                showPresetSheet = true
+                            }
+                        }
                     }
 
                     SettingsSlider(
@@ -154,7 +154,7 @@ fun HomeFragment(
 
             ColorSettingsSheet(showColorSheet && !showPresetSheet, viewModel, onDismissRequest = { showColorSheet = false })
             EffectSettingsSheet(showEffectSheet, viewModel, onDismissRequest = { showEffectSheet = false })
-//            PresetSettingsSheet(showPresetSheet, onDismissRequest = { showPresetSheet = false })
+            PresetSettingsSheet(showPresetSheet, onDismissRequest = { showPresetSheet = false })
         }
     }
 }
