@@ -115,6 +115,7 @@ fun HomeFragment(
                             description = "Save or Load Preset"
                         ) {
                             if(!showEffectSheet && !showColorSheet) {
+                                viewModel.update()
                                 showPresetSheet = true
                             }
                         }
