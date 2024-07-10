@@ -6,19 +6,23 @@ import android.widget.Toast
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.typhonh.infinitycube.model.CubeDatabase
 import com.typhonh.infinitycube.model.CubeRepository
 import com.typhonh.infinitycube.model.CubeRepositoryImpl
 import com.typhonh.infinitycube.model.MdnsManager
+import com.typhonh.infinitycube.model.PresetDao
 import com.typhonh.infinitycube.model.entity.CRGB
 import com.typhonh.infinitycube.model.entity.CubeState
 import com.typhonh.infinitycube.model.entity.DirectionType
 import com.typhonh.infinitycube.model.entity.EffectState
 import com.typhonh.infinitycube.model.entity.EffectType
+import com.typhonh.infinitycube.model.entity.Preset
 import com.typhonh.infinitycube.model.entity.SymmetryType
 import io.mhssn.colorpicker.ext.blue
 import io.mhssn.colorpicker.ext.green
 import io.mhssn.colorpicker.ext.red
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -48,7 +52,11 @@ class InfinityCubeViewModel() : ViewModel() {
 
     private val lock = Mutex()
 
+    private lateinit var presetDao: PresetDao
+
     fun init(context: Context) {
+        presetDao = CubeDatabase.getDatabase(context).presetDao()
+
         viewModelScope.launch {
             mdnsManager.init(context)
             cubeRepository.setUrl(mdnsManager.resolveAddress(mdnsManager.mdnsAddress))
@@ -208,5 +216,32 @@ class InfinityCubeViewModel() : ViewModel() {
         }
     }
 
+    fun getPresets(): Flow<List<Preset>> {
+        return presetDao.getAll()
+    }
 
+    fun addPreset(preset: Preset) {
+        viewModelScope.launch {
+            presetDao.insert(preset)
+        }
+    }
+
+    fun deletePreset(preset: Preset) {
+        viewModelScope.launch {
+            presetDao.delete(preset)
+        }
+    }
+
+    fun setPreset(preset: Preset) {
+        repositoryWrapper {
+            _effectState.value = cubeRepository.setEffectState(
+                preset.effect
+            )
+        }
+        repositoryWrapper {
+            _cubeState.value = cubeRepository.setCubeState(
+                preset.state
+            )
+        }
+    }
 }

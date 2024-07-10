@@ -1,34 +1,46 @@
 package com.typhonh.infinitycube.model.entity
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 import okhttp3.internal.toHexString
 import kotlin.math.roundToInt
 
+@Entity
 data class EffectState (
+    @ColumnInfo
     @SerializedName("name")
     val name: EffectType,
 
+    @ColumnInfo
     @SerializedName("speed")
     val speed: Float,
 
+    @ColumnInfo
     @SerializedName("symmetry")
     val symmetry: SymmetryType,
 
+    @ColumnInfo
     @SerializedName("direction")
     val direction: DirectionType,
 
+    @ColumnInfo
     @SerializedName("dot_width")
     val dotWidth: Float,
 
+    @ColumnInfo
     @SerializedName("dot_spacing")
     val dotSpacing: Float,
 
+    @ColumnInfo
     @SerializedName("dotBlur")
     val dotBlur: Float,
 
+    @ColumnInfo
     @SerializedName("motion_range")
     val motionRange: Float,
 
+    @ColumnInfo
     @SerializedName("color")
     val color: List<CRGB>
 ) {
