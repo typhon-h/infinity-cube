@@ -41,6 +41,8 @@ fun PreferencesSettingsSheet(state: Boolean, viewModel: InfinityCubeViewModel, o
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var showConfirmReset by remember { mutableStateOf(false) }
+    var showConfirmClearPreset by remember { mutableStateOf(false) }
+
     if (showConfirmReset) {
         AlertDialog(
             onDismissRequest = { showConfirmReset = false},
@@ -58,6 +60,32 @@ fun PreferencesSettingsSheet(state: Boolean, viewModel: InfinityCubeViewModel, o
             dismissButton = {
                 Button(
                     onClick = { showConfirmReset = false},
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary, contentColor = MaterialTheme.colorScheme.onSecondary)
+                ) {
+                    Text("Cancel")
+                }
+            },
+            title = { Text("Confirm Factory Reset") }
+        )
+    }
+
+    if (showConfirmClearPreset) {
+        AlertDialog(
+            onDismissRequest = { showConfirmClearPreset = false},
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showConfirmClearPreset = false
+                        viewModel.resetDatabase()
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)
+                ) {
+                    Text("Clear All")
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = { showConfirmClearPreset = false},
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary, contentColor = MaterialTheme.colorScheme.onSecondary)
                 ) {
                     Text("Cancel")
@@ -150,7 +178,7 @@ fun PreferencesSettingsSheet(state: Boolean, viewModel: InfinityCubeViewModel, o
                     }
                 }
 
-                Button(onClick = {}) {
+                Button(onClick = { showConfirmClearPreset = true }) {
                     Text("Clear Presets")
                 }
 

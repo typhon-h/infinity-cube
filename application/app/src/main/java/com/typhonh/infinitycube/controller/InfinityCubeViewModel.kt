@@ -21,6 +21,7 @@ import com.typhonh.infinitycube.model.entity.SymmetryType
 import io.mhssn.colorpicker.ext.blue
 import io.mhssn.colorpicker.ext.green
 import io.mhssn.colorpicker.ext.red
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,6 +29,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -52,10 +54,12 @@ class InfinityCubeViewModel() : ViewModel() {
 
     private val lock = Mutex()
 
+    private lateinit var db: CubeDatabase
     private lateinit var presetDao: PresetDao
 
     fun init(context: Context) {
-        presetDao = CubeDatabase.getDatabase(context).presetDao()
+        db = CubeDatabase.getDatabase(context)
+        presetDao = db.presetDao()
 
         viewModelScope.launch {
             mdnsManager.init(context)
@@ -242,6 +246,14 @@ class InfinityCubeViewModel() : ViewModel() {
             _cubeState.value = cubeRepository.setCubeState(
                 preset.state
             )
+        }
+    }
+
+    fun resetDatabase() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                db.clearAllTables()
+            }
         }
     }
 }
